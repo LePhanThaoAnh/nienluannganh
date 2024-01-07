@@ -1,11 +1,13 @@
 const server = require("./server");
 const configs = require("./src/config/environment");
-  
+const { MongoDB } = require("./src/helper/database");
+
 async function startServer() {
     try {
         let config = configs["development"];
         const PORT = config.port;
         const HOSTNAME = config.hostname;
+        await MongoDB.connect(config.dbUri);
         server.listen(PORT, HOSTNAME, () => {
             console.clear();
             console.log(`Website is running on port ${PORT}`);

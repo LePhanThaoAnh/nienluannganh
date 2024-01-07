@@ -13,12 +13,12 @@ console.log(listRouteName);
 for (const routeName of listRouteName) {
     let name = routeName.replace(".js","")
     if(name != "store-run")
-        router.use(name, middleware.message, require(`./routes/${name}`))
-    else 
+        router.use("/" + name, middleware.message, require(`./routes/${name}`))
+    else
         router.use("/", middleware.message, require(`./routes/${name}`))
 }
 
-router.use(storeRun.pageNotFound);
+// router.use(storeRun.pageNotFound);
 
 router.use((err, req, res, next) => {
     return res.status(err.statusCode || 500).json({

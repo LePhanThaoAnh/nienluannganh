@@ -1,0 +1,43 @@
+<div class="card">
+      <div class="card-header d-flex">
+        <div class="card-title flex-grow-1 d-flex justify-content-between align-items-center">
+            <h3>Quản lý phòng</h3>
+            <a href="/manager/room/add" class="btn btn-dark">Thêm</a>
+        </div>
+      </div>
+      <!-- /.card-header -->
+      <div class="card-body">
+        <table id="datatable" class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <th>STT</th>
+              <th>Số phòng</th>
+              <th>Tên phòng</th>
+              <th>Loại phòng</th>
+              <th>Giá phòng</th>
+              <th>Mô tả</th>
+              <th>Quản lý</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% var i=1; %>
+            <% for(let room of rooms){ %>
+            <tr>
+              <td><%= i++ %></td>
+              <td><%= room.number_room %></td>
+              <td><%= room.name %></td>
+              <td><%= room.type_room.name %></td>
+              <td><%= room.original_price %></td>
+              <td><%= room.description %></td>
+              <td>
+                <a href=""  class="btn btn-success">Xem chi tiết</a >
+                <a href="/manager/room/edit/<%=room._id %>"  class="btn btn-primary">Sửa</a >
+                <a href=""  class="btn btn-danger">Xóa</a>
+              </td>
+            </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+      <!-- /.card-body -->
+    </div>

@@ -1,6 +1,6 @@
 const constants = require("../constants/index");
 const { CookieProvider } = require("../helper/cookies");
-
+const { HotelRepository} = require("../repositories/index");
 class Middleware {
     constructor() {}
     async message(req, res, next) {
@@ -12,8 +12,14 @@ class Middleware {
         } else {
             req.messageResponse  = undefined;
         }
+        const hotelRepo = new HotelRepository();
+        let hotel = await hotelRepo.selectById("65941291e5ad547fa94874a6");
+        req.hotel = hotel;
         next();
     }
+
+
+
 };
 
 module.exports = { Middleware };
