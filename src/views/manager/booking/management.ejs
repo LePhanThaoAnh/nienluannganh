@@ -1,0 +1,43 @@
+<div class="card">
+      <div class="card-header d-flex">
+        <div class="card-title flex-grow-1 d-flex justify-content-between align-items-center">
+            <h3>Quản lý đặt phòng</h3>
+            <a href="/manager/booking/add" class="btn btn-dark">Thêm</a>
+        </div>
+      </div>
+      <!-- /.card-header -->
+      <div class="card-body">
+        <table id="datatable" class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <th>STT</th>
+              <th>Tên khách hàng</th>
+              <th>Ngày nhận phòng</th>
+              <th>Ngày trả phòng</th>
+              <th>Giá phòng</th>
+              <th>Số chứng minh nhân dân</th>
+              <th>Quản lý</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% var i=1; %>
+            <% for(let booking of bookings){ %>
+            <tr>
+              <td><%= i++ %></td>
+              <td><%= booking.customer.name %></td>
+              <td><%= booking.check_in%></td>
+              <td><%= booking.check_out %></td>
+              <td><%= booking.total_price %></td>
+              <td><%= booking.customer_identify_number %></td>
+              <td>
+                <a href="/manager/booking/detail/<%=booking._id %>"  class="btn btn-success">Xem chi tiết</a >
+                <a href="/manager/booking/edit/<%=booking._id %>"  class="btn btn-primary">Sửa</a >
+                <button  onclick="deleteConfirmButtonClk('/manager/booking/delete/<%=booking._id %>','Bạn có muốn xóa thông tin phòng này không?')" class="btn btn-danger">Xóa</button>
+              </td>
+            </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+      <!-- /.card-body -->
+    </div>

@@ -7,21 +7,20 @@
         </div>
     </div>
     <div class="card-body">
-
         <form action="/manager/room/add-handler" enctype="multipart/form-data" method="POST" class="d-flex flex-column">
             <div class="d-flex ">
                 <div class="flex-grow-1 me-3">
                     <div class="mb-3">
                         <label class="form-label ">Số phòng</label>
-                        <input class="form-control shadow-none" name="sophong" type="text">
+                        <input class="form-control shadow-none" name="sophong" type="text" required>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Tên phòng</label>
-                        <input class="form-control shadow-none" name="tenphong" type="text">
+                        <input class="form-control shadow-none" name="tenphong" type="text" required>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Loại phòng</label>
-                        <select class="form-select shadow-none" name="loaiphong" type="text">
+                        <select class="form-select shadow-none" name="loaiphong" type="text" required>
                             <% for (type of typeRooms) {%>
                                 <option value="<%= type._id %>">
                                     <%= type.name %>
@@ -31,14 +30,14 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Giá phòng</label>
-                        <input class="form-control shadow-none" name="giaphong" type="text">
+                        <input class="form-control shadow-none" name="giaphong" type="text" required>
                     </div>
                 </div>
 
                 <div class="flex-grow-1 ms-3">
                     <div class="mb-3">
                         <label class="form-label">Dịch vụ</label>
-                        <select class="form-select shadow-none" name="dichvu" type="text" multiple>
+                        <select class="form-select shadow-none" name="dichvu"  multiple required>
                             <% for (service of serviceRooms) {%>
                                 <option value="<%= service._id %>">
                                     <%= service.name %>
@@ -48,7 +47,7 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Lựa chọn</label>
-                        <select class="form-select shadow-none" name="luachon" type="text" multiple>
+                        <select class="form-select shadow-none" name="luachon"  multiple required >
                             <% for (selection of selectionRooms) {%>
                                 <option value="<%= selection._id %>">
                                     <%= selection.name %>
@@ -116,7 +115,7 @@
                                 </g>
                             </svg>
                             <div>Drop image here or click to select</div>
-                            <input type="file" id="image-input" name="hinhanh" accept="image/*" multiple>
+                            <input type="file" id="image-input" name="hinhanh" accept="image/*" multiple required>
                         </div>
                     
                         <div class="previews"></div>
@@ -197,12 +196,17 @@
 
             <div class="mb-3">
                 <label class="form-label">Mô tả</label>
-                <textarea class="form-control shadow-none" name="mota" rows="4"></textarea>
+                <textarea class="form-control shadow-none" name="mota" rows="4" required></textarea>
             </div>
             <div class="text-center my-1">
-                <button class="btn btn-dark shadow-none" type="submit" name="">
-                    Thêm thông tin
-                </button>
+                <div class="d-flex justify-content-center gap-4">
+                    <a class="btn btn-warning shadow-none" href="/manager/room">
+                        Trở về
+                    </a>
+                    <button class="btn btn-dark shadow-none" type="submit" name="">
+                        Thêm thông tin
+                    </button>
+                </div>
             </div>
         </form>
     </div>

@@ -14,7 +14,7 @@ const BookingSchema = new Schema(
         check_out: { type: Date, trim: true, required: true },
         total_price: { type: String, trim: true, required: true },
         customer_identify_number: { type: String, trim: true, required: true },
-        
+        deleteAt: {type:Date},
     },
     { versionKey: false }
 );

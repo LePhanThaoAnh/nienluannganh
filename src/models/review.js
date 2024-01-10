@@ -4,7 +4,12 @@ const Schema = mongoose.Schema;
 const ReviewSchema = new Schema(
     {
         // trim: chuỗi kh được có khoảng cách ở đầu cuối, required bắt buộc
-        rating: { type: Number, trim: true, required: true },
+        employeeScore: { type: Number, trim: true, required: true },
+        sactificationScore: { type: Number, trim: true, required: true },
+        wifiScore: { type: Number, trim: true, required: true },
+        comfortScore: { type: Number, trim: true, required: true },
+        moneyScore: { type: Number, trim: true, required: true },
+        cleanlinessScore: { type: Number, trim: true, required: true },
         comment: { type: String, trim: true, required: true },
         customer: { 
             type: mongoose.Schema.Types.ObjectId, 
@@ -24,6 +29,7 @@ const ReviewSchema = new Schema(
             ref: "rooms",
             required: true 
         },
+        deleteAt: {type:Date},
     },
     { versionKey: false }
 );

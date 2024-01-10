@@ -11,6 +11,7 @@ router.route("/blog").get(storeRun.blog);
 router.route("/contact").get(storeRun.contact);
 router.route("/hotel").get(storeRun.hotel);
 router.route("/services").get(storeRun.services);
+router.route("/room").get(storeRun.room);
 router.route("/").get(storeRun.homepage);
 
 

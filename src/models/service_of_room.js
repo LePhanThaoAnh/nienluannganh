@@ -16,7 +16,7 @@ const ServiceRoomSchema = new Schema(
             ref: "services",
             required: true 
         },
-        
+        deleteAt: {type:Date},
     },
     { versionKey: false }
 );

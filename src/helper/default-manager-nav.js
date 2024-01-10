@@ -10,19 +10,19 @@ module.exports = () =>{
             {
                 name: "Quản lý phòng",
                 icon: "bi bi-journal",
-                url: "",
+                url: "/manager/room",
                 children: []
             },
             {
                 name: "Quản lý đặt phòng",
                 icon: "bi bi-journal-text",
-                url: "",
+                url: "/manager/booking",
                 children: []
             },
             {
                 name: "Quản lý sự kiện",
                 icon: "bi bi-calendar-event",
-                url: "",
+                url: "/manager/event",
                 children: []
             },
             {
@@ -33,13 +33,13 @@ module.exports = () =>{
                     {
                         name: "Quản lý nhân viên",
                         icon: "bi bi-circle",
-                        url: "",
+                        url: "/manager/user/employee",
                         children: []
                     },
                     {
                         name: "Quản lý khách hàng",
                         icon: "bi bi-circle",
-                        url: "",
+                        url: "/manager/user/customer",
                         children: []
                     },
                 ]
@@ -47,7 +47,7 @@ module.exports = () =>{
             {
                 name: "Quản lý đánh giá",
                 icon: "bi bi-star",
-                url: "",
+                url: "/manager/review",
                 children: []
             },
             {

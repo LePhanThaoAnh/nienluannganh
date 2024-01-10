@@ -15,6 +15,7 @@ const HotelSchema = new Schema(
         description: { type: String, trim: true, required: true },
         star: { type: Number, trim: true, required: true },
         city_id:{type: String, trim: true, required: true},
+        deleteAt: {type:Date},
     },
     { versionKey: false }
 );

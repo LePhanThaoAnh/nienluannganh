@@ -12,6 +12,7 @@ const PaymentSchema = new Schema(
             ref: "bookings",
             required: true 
         },
+        deleteAt: {type:Date},
     },
     { versionKey: false }
 );

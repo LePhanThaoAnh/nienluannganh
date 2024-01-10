@@ -206,9 +206,15 @@
                 <textarea class="form-control shadow-none" name="mota" required rows="4"><%= room.description %></textarea>
             </div>
             <div class="text-center my-1">
-                <button class="btn btn-dark shadow-none" type="submit" name="">
-                    Sửa thông tin
-                </button>
+                <div class="d-flex justify-content-center gap-4">
+                    <a class="btn btn-warning shadow-none" href="/manager/room">
+                        Trở về
+                    </a>
+                    <button class="btn btn-dark shadow-none" type="submit" name="">
+                        Sửa thông tin
+                    </button>
+                </div>
+                
             </div>
         </form>
     </div>

@@ -11,7 +11,10 @@ const EventSchema = new Schema(
             ref: "hotels",
             required: true 
         },
-        discount_percent: { type: Number, trim: true, required: true },       
+        discount_percent: { type: Number, trim: true, required: true }, 
+        date_start: { type: Date, trim: true, required: true },
+        date_end: { type: Date, trim: true, required: true },   
+        deleteAt: {type:Date},   
     },
     { versionKey: false }
 );

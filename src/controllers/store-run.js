@@ -3,6 +3,7 @@ const message = require("../helper/message")
 const {CookieProvider} = require("../helper/cookies")
 const constants = require("../constants")
 const constantMesages = require("../constants/message") 
+const getImageOfHotel = require("../services/get_image_of_hotel")
 //controller nơi nhận dữ liệu từ request(req) => vào Service xử lý dữ liệu 
 //=> gọi repository để truy cập vào database  thông qua models
 class StoreRunController{
@@ -14,7 +15,6 @@ class StoreRunController{
         })
     }
     async blog(req, res) {
-        //get data from database to have username = "testuser1"
         res.render("index",{
             page: "home/blog",
             ...defaultData(req)
@@ -22,23 +22,28 @@ class StoreRunController{
     }
 
     async contact(req, res) {
-        //get data from database to have username = "testuser1"
         res.render("index",{
             page: "home/contact",
             ...defaultData(req)
         })
     }
     async hotel(req, res) {
-        //get data from database to have username = "testuser1"
         res.render("index",{
             page: "home/hotel",
             ...defaultData(req)
         })
     }
     async services(req, res) {
-        //get data from database to have username = "testuser1"
         res.render("index",{
             page: "home/services",
+            ...defaultData(req)
+        })
+    }
+    async room(req, res) {
+        let images = await getImageOfHotel(req.hotel);
+        res.render("index",{
+            page: "home/room",
+            images: images,
             ...defaultData(req)
         })
     }

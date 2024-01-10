@@ -17,6 +17,7 @@ const UserSchema = new Schema(
             ref: "roles",
             required: true
         },
+        deleteAt: {type:Date},
     },
     { versionKey: false }
 );

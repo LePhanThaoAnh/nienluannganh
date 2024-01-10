@@ -16,7 +16,7 @@ const SelectionRoomSchema = new Schema(
             ref: "selections",
             required: true 
         },
-        
+        deleteAt: {type:Date},
     },
     { versionKey: false }
 );

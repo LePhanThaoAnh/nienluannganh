@@ -15,7 +15,6 @@
               <th>Tên phòng</th>
               <th>Loại phòng</th>
               <th>Giá phòng</th>
-              <th>Mô tả</th>
               <th>Quản lý</th>
             </tr>
           </thead>
@@ -28,11 +27,10 @@
               <td><%= room.name %></td>
               <td><%= room.type_room.name %></td>
               <td><%= room.original_price %></td>
-              <td><%= room.description %></td>
               <td>
-                <a href=""  class="btn btn-success">Xem chi tiết</a >
+                <a href="/manager/room/detail/<%=room._id %>"  class="btn btn-success">Xem chi tiết</a >
                 <a href="/manager/room/edit/<%=room._id %>"  class="btn btn-primary">Sửa</a >
-                <a href=""  class="btn btn-danger">Xóa</a>
+                <button  onclick="deleteConfirmButtonClk('/manager/room/delete/<%=room._id %>','Bạn có muốn xóa thông tin phòng này không?')" class="btn btn-danger">Xóa</button>
               </td>
             </tr>
             <% } %>

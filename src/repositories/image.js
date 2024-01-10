@@ -4,9 +4,16 @@ class ImageRepository {
     // Hàm xây dựng khởi tạo
     constructor() {}
 
+    // deleteAt không có gì, nếu xóa sẽ thêm dữ liệu vào. Sau đó select chỉ cho show những cái không có gì.
+    // Thực chất xóa là ẩn.
     async selectAll() {
         try {
-            const query = Image.find();
+            const query = Image.find({
+                deleteAt: {
+                  $exists: false,
+                  $in: [null, undefined] 
+                }
+              });
                 // execute: thực thi
             return await query.exec();
         } catch (err) {
@@ -17,6 +24,10 @@ class ImageRepository {
     async select(filter) {
         try {
             // lọc ra 1 list theo yêu cầu
+            filter.deleteAt = {
+                $exists: false,
+                $in: [null, undefined] 
+              }
             const query = Image.find(filter);
             return await query.exec();
         } catch (err) {
@@ -26,6 +37,10 @@ class ImageRepository {
     async selectOne(filter) {
         try {
             // lọc 1 thằng theo yêu cầu
+            filter.deleteAt = {
+                $exists: false,
+                $in: [null, undefined] 
+              }
             const query = Image.findOne(filter);
             return await query.exec();
         } catch (err) {
@@ -66,14 +81,18 @@ class ImageRepository {
     }
     async delete(id) {
         try {
-            return await Image.deleteOne({ _id: id });
+            return await Image.updateOne({ _id: id },{
+                deleteAt: new Date()
+            });
         } catch (err) {
             console.log(err);
         }
     }
     async deleteMany(filter) {
         try {
-            return await Image.deleteMany(filter);
+            return await Image.updateOne(filter,{
+                deleteAt: new Date()
+            });
         } catch (err) {
             console.log(err);
         }

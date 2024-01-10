@@ -68,3 +68,19 @@
 
   });
 </script>
+<script>
+  function deleteConfirmButtonClk(url, message){
+    swal({
+      title: "Xác nhận xóa",
+      text: message,
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    })
+    .then((willDelete) => {
+      if (willDelete) {
+        window.location.href = url
+      }
+    });
+  }
+</script>

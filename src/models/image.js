@@ -11,6 +11,7 @@ const ImageSchema = new Schema(
             ref: "rooms",
             required: true 
         },
+        deleteAt: {type:Date},
     },
     { versionKey: false }
 );

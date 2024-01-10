@@ -4,7 +4,6 @@ const router = express.Router();
 const { StoreRunController }  = require("./controllers/store-run");
 const { Middleware }  = require("./middlewares/index.middleware");
 
-
 let storeRun = new StoreRunController();
 let middleware = new Middleware();
 let listRouteName = fs.readdirSync(`${__dirname}/routes`);
@@ -19,6 +18,7 @@ for (const routeName of listRouteName) {
 }
 
 // router.use(storeRun.pageNotFound);
+router.use(express.urlencoded({extended: true}))
 
 router.use((err, req, res, next) => {
     return res.status(err.statusCode || 500).json({

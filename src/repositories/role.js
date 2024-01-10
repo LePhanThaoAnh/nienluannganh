@@ -4,9 +4,16 @@ class RoleRepository {
     // Hàm xây dựng khởi tạo
     constructor() {}
 
+    // deleteAt không có gì, nếu xóa sẽ thêm dữ liệu vào. Sau đó select chỉ cho show những cái không có gì.
+    // Thực chất xóa là ẩn.
     async selectAll() {
         try {
-            const query = Role.find();
+            const query = Role.find({
+                deleteAt: {
+                  $exists: false,
+                  $in: [null, undefined] 
+                }
+              });
                 // execute: thực thi
             return await query.exec();
         } catch (err) {
@@ -17,6 +24,10 @@ class RoleRepository {
     async select(filter) {
         try {
             // lọc ra 1 list theo yêu cầu
+            filter.deleteAt = {
+                $exists: false,
+                $in: [null, undefined] 
+              }
             const query = Role.find(filter);
             return await query.exec();
         } catch (err) {
@@ -26,6 +37,10 @@ class RoleRepository {
     async selectOne(filter) {
         try {
             // lọc 1 thằng theo yêu cầu
+            filter.deleteAt = {
+                $exists: false,
+                $in: [null, undefined] 
+              }
             const query = Role.findOne(filter);
             return await query.exec();
         } catch (err) {
@@ -66,14 +81,18 @@ class RoleRepository {
     }
     async delete(id) {
         try {
-            return await Role.deleteOne({ _id: id });
+            return await Role.updateOne({ _id: id },{
+                deleteAt: new Date()
+            });
         } catch (err) {
             console.log(err);
         }
     }
     async deleteMany(filter) {
         try {
-            return await Role.deleteMany(filter);
+            return await Role.updateOne(filter,{
+                deleteAt: new Date()
+            });
         } catch (err) {
             console.log(err);
         }

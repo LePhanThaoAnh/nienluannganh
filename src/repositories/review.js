@@ -4,9 +4,16 @@ class ReviewRepository {
     // Hàm xây dựng khởi tạo
     constructor() {}
 
+    // deleteAt không có gì, nếu xóa sẽ thêm dữ liệu vào. Sau đó select chỉ cho show những cái không có gì.
+    // Thực chất xóa là ẩn.
     async selectAll() {
         try {
-            const query = Review.find();
+            const query = Review.find({
+                deleteAt: {
+                  $exists: false,
+                  $in: [null, undefined] 
+                }
+              });
                 // execute: thực thi
             return await query.exec();
         } catch (err) {
@@ -17,6 +24,10 @@ class ReviewRepository {
     async select(filter) {
         try {
             // lọc ra 1 list theo yêu cầu
+            filter.deleteAt = {
+                $exists: false,
+                $in: [null, undefined] 
+              }
             const query = Review.find(filter);
             return await query.exec();
         } catch (err) {
@@ -26,6 +37,10 @@ class ReviewRepository {
     async selectOne(filter) {
         try {
             // lọc 1 thằng theo yêu cầu
+            filter.deleteAt = {
+                $exists: false,
+                $in: [null, undefined] 
+              }
             const query = Review.findOne(filter);
             return await query.exec();
         } catch (err) {
@@ -66,14 +81,18 @@ class ReviewRepository {
     }
     async delete(id) {
         try {
-            return await Review.deleteOne({ _id: id });
+            return await Review.updateOne({ _id: id },{
+                deleteAt: new Date()
+            });
         } catch (err) {
             console.log(err);
         }
     }
     async deleteMany(filter) {
         try {
-            return await Review.deleteMany(filter);
+            return await Review.updateOne(filter,{
+                deleteAt: new Date()
+            });
         } catch (err) {
             console.log(err);
         }

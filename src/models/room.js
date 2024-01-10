@@ -20,6 +20,7 @@ const RoomSchema = new Schema(
             ref: "type_rooms",
             required: true 
         },
+        deleteAt: {type:Date},
     },
     { versionKey: false }
 );
