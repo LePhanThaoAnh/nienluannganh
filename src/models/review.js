@@ -10,11 +10,11 @@ const ReviewSchema = new Schema(
         comfortScore: { type: Number, trim: true, required: true },
         moneyScore: { type: Number, trim: true, required: true },
         cleanlinessScore: { type: Number, trim: true, required: true },
-        comment: { type: String, trim: true, required: true },
+        comment: { type: String, trim: true},
         customer: { 
             type: mongoose.Schema.Types.ObjectId, 
             autopopulate: true, //giúp đọc luôn dữ liệu của cả bảng chứ không chỉ lấy id
-            ref: "user",
+            ref: "users",
             required: true 
         },
         booking: { 

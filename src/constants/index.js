@@ -1,4 +1,4 @@
 module.exports = {
-    access_token: "access_token",
+    user_info: "user_info",
     has_message: "has_message",
 };

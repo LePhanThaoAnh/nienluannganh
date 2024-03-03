@@ -9,13 +9,15 @@ const getAllRooms  = require("../services/get_all_rooms")
 const getAllBookings  = require("../services/get_all_booking")
 const getAllUsers  = require("../services/get_all_user")
 const getAllEvents  = require("../services/get_all_event")
-const getAllRoles  = require("../services/get_all_role")
+const getAllReviews = require("../services/get_all_review")
 const getAllTypeRooms  = require("../services/get_all_type_of_rooms")
 const getAllSelection  = require("../services/get_all_selection")
 const getAllService  = require("../services/get_all_service")
 const getTypeRoomById  = require("../services/get_type_room_by_id")
 const getServiceById  = require("../services/get_service_by_id")
 const getRoomById  = require("../services/get_room_by_id")
+const getBookingById  = require("../services/get_booking_by_id")
+const getReviewById  = require("../services/get_review_by_id")
 const getEventById  = require("../services/get_event_by_id")
 const getUserById  = require("../services/get_user_by_id")
 const getSelectionById  = require("../services/get_selection_by_id")
@@ -29,16 +31,19 @@ const createSelectionRoom  = require("../services/create_selection_room")
 const updateRoom = require("../services/update_room");
 const updateUser = require("../services/update_user");
 const updateEvent = require("../services/update_event");
+const updateBooking = require("../services/update_booking");
 const deleteServiceRoomByFilter = require("../services/delete_service_room_by_filter");
 const deleteSelectionRoomByFilter = require("../services/delete_selection_room_by_filter");
 const deleteImageByFilter = require("../services/delete_image_by_filter");
 const deleteRoom = require("../services/delete_room");
 const deleteEvent = require("../services/delete_event");
 const deleteUser = require("../services/delete_user");
+const deleteBooking = require("../services/delete_booking");
 
 const constants = require("../constants")
 const constantMesages = require("../constants/message"); 
 const { RoleEnum } = require("../models/enum/role");
+const {BookingStatusEnum} = require("../models/enum/booking_status");
 
 //controller nơi nhận dữ liệu từ request(req) => vào Service xử lý dữ liệu 
 //=> gọi repository để truy cập vào database  thông qua models
@@ -58,6 +63,7 @@ class ManagerController{
         })
     }
 
+    
     async roomDetail(req, res) {
         let room = await getRoomById(req.params.id,true);
         res.render("index-manager",{
@@ -549,18 +555,77 @@ class ManagerController{
 
     //quản lý đặt phòng
     async booking(req, res) {
-        let bookings = await getAllBookings({
-            user: req.user,
-        });
+        let bookings = await getAllBookings(req.hotel);
+        let getStatus = (booking) => {
+            if(booking.deleteAt){
+                return 'Đã bị hủy';
+            }else if(booking.status == BookingStatusEnum.CheckedOut){
+                return 'Đã trả phòng';
+            }else if(booking.status == BookingStatusEnum.CheckedIn){
+                return 'Đang nhận phòng';
+            }else if(booking.status == BookingStatusEnum.Reserved){
+                return 'Đã đặt phòng';
+            }
+        }
         res.render("index-manager",{
             page: "manager/index",
             roomPage: "booking/management",
             bookings: bookings,
+            getStatus:getStatus,
             ...defaultManagerNav(),
             ...defaultData(req)
         })
     }
 
-    
+    async editBookingStatus(req, res){
+        res.render("index-manager",{
+            page: "manager/index",
+            roomPage: "booking/status_booking",
+            id:req.params.id,
+            ...defaultManagerNav(),
+            ...defaultData(req)
+        })
+    }
+
+    async editStatusBookingHandler(req,res) {
+        let booking = await getBookingById(req.params.id,false);
+        console.log(booking);
+        if(req.body.status != "cancel"){
+            booking.status = req.body.status;
+            await updateBooking(booking);
+        }else{
+            await deleteBooking(booking);
+        }
+
+        let cookies = new CookieProvider(req, res);
+        cookies.setCookie(
+            constants.has_message,
+            JSON.stringify(message("Bạn đã sửa trạng thái thành công!",constantMesages.successCustom)),
+            1
+        );
+        res.redirect("/manager/booking");
+    }
+    //Đánh giá
+    async review(req, res){
+        let reviews = await getAllReviews(req.hotel);
+        res.render("index-manager",{
+            page: "manager/index",
+            roomPage: "review/management",
+            reviews: reviews,
+            ...defaultManagerNav(),
+            ...defaultData(req)
+        })
+    }
+
+    async reviewDetail(req,res){
+        let review = await getReviewById(req.params.id);
+        res.render("index-manager",{
+            page: "manager/index",
+            roomPage: "review/detail",
+            review: review,
+            ...defaultManagerNav(),
+            ...defaultData(req)
+        })
+    }
 }
 module.exports = { ManagerController }

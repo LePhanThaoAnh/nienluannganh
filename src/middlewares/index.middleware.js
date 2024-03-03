@@ -1,12 +1,21 @@
 const constants = require("../constants/index");
 const { CookieProvider } = require("../helper/cookies");
 const { HotelRepository} = require("../repositories/index");
+
+const constantMesages = require("../constants/message"); 
+const { RoleEnum } = require("../models/enum/role");
+const message = require("../helper/message")
+const createUser  = require("../services/create_user");
+const loginUser = require("../services/login");
+const updateUser = require("../services/update_user");
+
 class Middleware {
-    constructor() {}
+    
     async message(req, res, next) {
         let cookies = new CookieProvider(req, res);
-        if (cookies.getCookie(constants.has_message) && cookies.getCookie(constants.has_message) != "") {
-            let data = JSON.parse(cookies.getCookie(constants.has_message));
+        let messageString = cookies.getCookie(constants.has_message);
+        if (messageString) {
+            let data = JSON.parse(messageString);
             req.messageResponse = data;
             cookies.clearCookie(constants.has_message);
         } else {
@@ -15,10 +24,110 @@ class Middleware {
         const hotelRepo = new HotelRepository();
         let hotel = await hotelRepo.selectById("65941291e5ad547fa94874a6");
         req.hotel = hotel;
-        next();
+        return await next();
     }
 
+    async registration(req, res, next){
+        let cookies = new CookieProvider(req, res);
+        if(req.body.ten && req.body.email && req.body.sodienthoai && req.body.matkhau){
+            let user = {
+                name: req.body.ten,
+                phone: req.body.sodienthoai,
+                email: req.body.email,
+                password: req.body.matkhau
+            }
+            await createUser(user);
+            
+            cookies.setCookie(
+                constants.has_message,
+                JSON.stringify(message("Bạn đã đăng ký tài khoản thành công!",constantMesages.successCustom)),
+                1
+            );
+            
+            return res.redirect(req.originalUrl);
+        }
+        next()
+    }
 
+    async login(req, res, next){
+        if(req.body.email && req.body.matkhau){
+            
+            let user = await loginUser({
+                email: req.body.email,
+                password: req.body.matkhau,
+            });
+            if(user!=null){
+                let cookies = new CookieProvider(req, res);
+                cookies.setCookie(
+                    constants.has_message,
+                    JSON.stringify(message("Bạn đã đăng nhập tài khoản thành công!",constantMesages.successCustom)),
+                    1
+                );
+                cookies.setCookie(
+                    //giữ thông tin người dùng đăng nhập 
+                    constants.user_info,
+                    JSON.stringify(user),
+                    10000
+                )
+                if(user.role.name == RoleEnum.Customer){
+                }else if(user.role.name == RoleEnum.Employee){
+                    return res.redirect("/manager/room/");
+                }
+            }else{
+                let cookies = new CookieProvider(req, res);
+                cookies.setCookie(
+                    constants.has_message,
+                    JSON.stringify(message("Bạn đã đăng nhập thất bại!",constantMesages.errorCustom)),
+                    1
+                );
+            }
+            return res.redirect(req.originalUrl);
+        }
+        next()
+    }
+
+    async authenticate(req, res, next){
+        let cookies = new CookieProvider(req, res);
+        let userString = cookies.getCookie(constants.user_info);
+        if(userString ){
+            req.user = JSON.parse(userString);
+        }
+        await next();
+    }
+
+    async passwordChange(req, res, next){
+        let cookies = new CookieProvider(req, res);
+        
+        if(req.body.matkhaucu){
+            let userString = cookies.getCookie(constants.user_info);
+            if(userString ){
+                let currentUser = JSON.parse(userString);
+                let user = await loginUser({
+                    email: currentUser.email,
+                    password: req.body.matkhaucu,
+                });
+                if(user){
+                    user.password = req.body.matkhaumoi;
+                    await updateUser(user)
+                    cookies.setCookie(
+                        constants.has_message,
+                        JSON.stringify(message("Bạn đã đổi mật khẩu thành công",constantMesages.successCustom)),
+                        1
+                    );
+                } else {
+                    cookies.setCookie(
+                        constants.has_message,
+                        JSON.stringify(message("Mật khẩu cũ không chính xác",constantMesages.errorCustom)),
+                        1
+                    );
+                }
+                return res.redirect(req.originalUrl);
+            }
+            next();
+        }else{
+            next();
+        }
+    }
 
 };
 

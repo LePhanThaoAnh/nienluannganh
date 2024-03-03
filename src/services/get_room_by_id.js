@@ -5,7 +5,7 @@ const {
     ImageRepository
 } = require('../repositories/index');
 
-async function getRoomById(id,populate) {
+async function getRoomById(id,populate=false) {
     const roomRepo = new RoomRepository();
     let room = await roomRepo.selectById(id);
     if(populate){

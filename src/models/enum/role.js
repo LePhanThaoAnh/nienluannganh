@@ -1,5 +1,6 @@
 const RoleEnum = {
     Customer: 'Khách hàng',
-    Employee: 'Nhân viên'
+    Employee: 'Nhân viên',
+    Admin: 'Admin',
 };
 module.exports = {RoleEnum}

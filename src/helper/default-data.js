@@ -1,6 +1,7 @@
 module.exports = (req) =>{
     return  {
         hotel: req.hotel,
-        message: req.messageResponse
+        message: req.messageResponse,
+        user: req.user,
     }
 }

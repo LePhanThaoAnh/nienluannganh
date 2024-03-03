@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const {BookingStatusEnum} = require("./enum/booking_status");
 
 const BookingSchema = new Schema(
     {
@@ -15,6 +16,7 @@ const BookingSchema = new Schema(
         total_price: { type: String, trim: true, required: true },
         customer_identify_number: { type: String, trim: true, required: true },
         deleteAt: {type:Date},
+        status: { type: String , trim: true, default: BookingStatusEnum.Reserved},
     },
     { versionKey: false }
 );

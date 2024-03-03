@@ -48,7 +48,7 @@ UserSchema.pre('create', function (next) {
     });
 });
 
-
+//so sánh password truyền vào vs password vs database
 UserSchema.methods.comparePassword = async function (candidatePassword) {
     let isMatch = await bcrypt.compareSync(candidatePassword, this.password)
     return isMatch;

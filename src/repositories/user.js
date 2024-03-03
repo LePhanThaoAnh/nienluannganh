@@ -97,6 +97,28 @@ class UserRepository {
             console.log(err);
         }
     }
+    async login(user) {
+        try {
+            // lọc 1 thằng theo yêu cầu
+            
+            let filter = {
+                deleteAt : {
+                    $exists: false,
+                    $in: [null, undefined] 
+                },
+                email: user.email,
+            }
+            const query = User.findOne(filter);
+            let currentUser = await query.exec();
+            if(currentUser){
+                let isMatch = await currentUser.comparePassword(user.password);
+                return isMatch ? currentUser : null;
+            }
+            return null;
+        } catch (err) {
+            console.log(err);
+        }
+    }
 }
 
 module.exports = { UserRepository };
