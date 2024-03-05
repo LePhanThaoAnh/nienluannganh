@@ -7,7 +7,7 @@ const path = require("path");
 const {CookieProvider} = require("../helper/cookies")
 const getAllRooms  = require("../services/get_all_rooms")
 const getAllBookings  = require("../services/get_all_booking")
-const getAllUsers  = require("../services/get_all_user")
+const getAllUsersByHotel  = require("../services/get_all_user_by_hotel")
 const getAllEvents  = require("../services/get_all_event")
 const getAllReviews = require("../services/get_all_review")
 const getAllTypeRooms  = require("../services/get_all_type_of_rooms")
@@ -25,6 +25,7 @@ const getImageByFilter  = require("../services/get_image_by_filter")
 const createRoom  = require("../services/create_room")
 const createUser  = require("../services/create_user")
 const createEvent = require("../services/create_event")
+const createEmployee = require("../services/create_employee");
 const createImage  = require("../services/create_image")
 const createServiceRoom  = require("../services/create_service_room")
 const createSelectionRoom  = require("../services/create_selection_room")
@@ -39,6 +40,7 @@ const deleteRoom = require("../services/delete_room");
 const deleteEvent = require("../services/delete_event");
 const deleteUser = require("../services/delete_user");
 const deleteBooking = require("../services/delete_booking");
+
 
 const constants = require("../constants")
 const constantMesages = require("../constants/message"); 
@@ -381,7 +383,7 @@ class ManagerController{
 
     //quản lý nhân viên
     async employee(req, res) {
-        let users = await getAllUsers(RoleEnum.Employee);
+        let users = await getAllUsersByHotel(req.hotel,RoleEnum.Employee);
         res.render("index-manager",{
             page: "manager/index",
             roomPage: "user/employee/management",
@@ -407,7 +409,8 @@ class ManagerController{
             email: req.body.email,
             password: req.body.matkhau
         }
-        await createUser(user, RoleEnum.Employee);
+        let employee = await createUser(user, RoleEnum.Employee);
+        await createEmployee(req.hotel,employee);
         let cookies = new CookieProvider(req, res);
         cookies.setCookie(
             constants.has_message,

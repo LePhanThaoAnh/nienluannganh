@@ -316,7 +316,7 @@ class StoreRunController{
         if(isCheckInWithCreditCard){
             return res.redirect("/payment/create_payment_url/" + currenrtBooking._id + "?amount=" + total)
         }
-        return res.redirect("/room")
+        return res.redirect("/hotel/"+ req.hotel._id.toString() +"/room")
     }
     
     async roomDetail(req, res) {

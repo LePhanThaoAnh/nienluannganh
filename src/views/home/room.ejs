@@ -47,7 +47,7 @@
   <div class="d-flex gap-4">
     <div class="col-3">
       <form
-        action="/room" method="GET" class="d-flex flex-column py-5 px-4 c-bg-primary"
+        action="/hotel/<%=hotel._id%>/room" method="GET" class="d-flex flex-column py-5 px-4 c-bg-primary"
       >
         <div>
           <div class="fs-1 pb-3 fw-semibold text-color">Search</div>
@@ -224,7 +224,7 @@
           </td>
 
           <td>
-            <a href="/booking-show/<%=typeRoom._id%>?ngaydau=<%= ngaydau %>&ngayket=<%= ngayket %>"  class="btn btn-success py-2 px-5">Tôi sẽ đặt</a>
+            <a href="/hotel/<%=hotel._id%>/booking-show/<%=typeRoom._id%>?ngaydau=<%= ngaydau %>&ngayket=<%= ngayket %>"  class="btn btn-success py-2 px-5">Tôi sẽ đặt</a>
             <div>Giá:</div>
             <div id="current-total-price-<%= typeRoom._id %>">0 VND</div>
           </td>

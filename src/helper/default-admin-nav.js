@@ -10,13 +10,13 @@ module.exports = () =>{
             {
                 name: "Quản lý khách sạn",
                 icon: "bi bi-journal",
-                url: "administrator/hotel",
+                url: "/administrator/hotel",
                 children: []
             },
             {
                 name: "Quản lý dịch vụ",
                 icon: "bi bi-journal-text",
-                url: "administrator/",
+                url: "/administrator/service",
                 children: []
             },
             {
@@ -28,7 +28,7 @@ module.exports = () =>{
             {
                 name: "Quản lý lựa chọn",
                 icon: "bi bi-star",
-                url: "",
+                url: "/administrator/selection",
                 children: []
             },
             {

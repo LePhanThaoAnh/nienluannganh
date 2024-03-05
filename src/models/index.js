@@ -13,8 +13,9 @@ const { ServiceRoom } = require("./service_of_room");
 const { Service } = require("./service");
 const { TypeRoom } = require("./type_of_room");
 const { User } = require("./user");
-
+const {Employee} = require("./employee");
 module.exports = {
+    Employee,
     Booking,
     DetailBooking,
     Event,

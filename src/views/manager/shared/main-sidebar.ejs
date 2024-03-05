@@ -16,7 +16,7 @@
           >
           <% for(let nav of navTabs){ %>
             <li class="nav-item">
-              <a href="<%= nav.url %>" class="nav-link">
+              <a href="<%= nav.url.replace('/manager','/manager/' + hotel._id.toString()) %>" class="nav-link">
                 <i class="nav-icon <%= nav.icon %>"></i>
                 <p>
                   <%= nav.name %>
@@ -30,7 +30,7 @@
               <ul class="nav nav-treeview">
                 <% for(let navChild of nav.children){ %>
                 <li class="nav-item">
-                  <a href="<%= navChild.url %>" class="nav-link">
+                  <a href="<%= navChild.url.replace('/manager','/manager/' + hotel._id.toString()) %>" class="nav-link">
                     <i class="nav-icon <%= navChild.icon %>"></i>
                     <p><%= navChild.name %></p>
                   </a>

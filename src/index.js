@@ -11,15 +11,24 @@ console.log(listRouteName);
 
 for (const routeName of listRouteName) {
     let name = routeName.replace(".js","")
-    if(name != "store-run")
-        router.use("/" + name,middleware.authenticate, middleware.message, require(`./routes/${name}`))
+    //khác store - run 
+    if(name != "store-run"){
+        if(name == "manager"){
+            // thằng nào muốn truy cập manager đều phải có 1 hotel id
+            router.use("/" + name + "/:hotelId",middleware.authenticate, middleware.message, require(`./routes/${name}`))
+        }
+        else{
+            //đường dẫn paymnet or ad đều dùng này
+            router.use("/" + name,middleware.authenticate, middleware.message, require(`./routes/${name}`))
+        }}
+    // là store-run thì dùng đường dẫn này 
     else
         router.use("/",
             middleware.registration,
             middleware.login,
             middleware.passwordChange,
-            middleware.authenticate, 
-            middleware.message, 
+            middleware.authenticate,
+            middleware.message,
             require(`./routes/${name}`)
         )
 }

@@ -21,7 +21,7 @@
 
                     <div class="mb-3">
                         <label class="form-label">Số sao</label>
-                        <input class="form-control shadow-none" name="sosao" type="number" value="<%=hotel.star%>" required>
+                        <input class="form-control shadow-none" name="sosao" type="number" min="1" max="5" value="<%=hotel.star%>" required>
                     </div>
 
                     <div class="mb-3">
@@ -31,27 +31,6 @@
 
                 </div>
 
-                <div class="flex-grow-1 ms-3">
-                    <div class="mb-3">
-                        <label class="form-label">Chủ sở hữu</label>
-                        <input class="form-control shadow-none" name="chusohuu" type="text" value="<%=hotel.owner.name%>" required>
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Số điện thoại</label>
-                        <input class="form-control shadow-none" name="sodienthoai" type="number" value="<%=hotel.owner.phone%>" required>
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Email</label>
-                        <input class="form-control shadow-none" name="email" type="text" value="<%=hotel.owner.email%>" required>
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Miêu tả khách sạn</label>
-                        <input class="form-control shadow-none" name="mieuta"  type="text" value="<%=hotel.description%>" required>
-                    </div>
-                </div>
             </div>
             <div class="text-center my-1">
                 <div class="d-flex justify-content-center gap-4">

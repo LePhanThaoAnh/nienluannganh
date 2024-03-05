@@ -13,8 +13,10 @@ const { ServiceRoomRepository } = require("./service_of_room");
 const { ServiceRepository } = require("./service");
 const { TypeRoomRepository } = require("./type_of_room");
 const { UserRepository } = require("./user");
+const {EmployeeRepository} = require("./employee");
 
 module.exports = {
+    EmployeeRepository,
     BookingRepository,
     DetailBookingRepository,
     EventRepository,

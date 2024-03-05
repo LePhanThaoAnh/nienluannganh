@@ -8,6 +8,7 @@ const message = require("../helper/message")
 const createUser  = require("../services/create_user");
 const loginUser = require("../services/login");
 const updateUser = require("../services/update_user");
+const getEmployeeByUser = require("../services/get_employee_by_user");
 
 class Middleware {
     
@@ -22,8 +23,19 @@ class Middleware {
             req.messageResponse  = undefined;
         }
         const hotelRepo = new HotelRepository();
-        let hotel = await hotelRepo.selectById("65941291e5ad547fa94874a6");
-        req.hotel = hotel;
+        if(req.params.hotelId){
+            let hotel = await hotelRepo.selectById(req.params.hotelId);
+            req.hotel = hotel;
+        }
+        return await next();
+    }
+
+    async getHotel(req, res, next){
+        const hotelRepo = new HotelRepository();
+        if(req.params.hotelId){
+            let hotel = await hotelRepo.selectById(req.params.hotelId);
+            req.hotel = hotel;
+        }
         return await next();
     }
 
@@ -71,8 +83,12 @@ class Middleware {
                 )
                 if(user.role.name == RoleEnum.Customer){
                 }else if(user.role.name == RoleEnum.Employee){
-                    return res.redirect("/manager/room/");
+                    let employee = await getEmployeeByUser(user);
+                    return res.redirect("/manager/"+ employee.hotel._id.toString() + "/room");
+                }else if(user.role.name == RoleEnum.Admin){
+                    return res.redirect("/administrator/hotel");
                 }
+                
             }else{
                 let cookies = new CookieProvider(req, res);
                 cookies.setCookie(
