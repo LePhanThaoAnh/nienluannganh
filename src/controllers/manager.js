@@ -8,6 +8,7 @@ const {CookieProvider} = require("../helper/cookies")
 const getAllRooms  = require("../services/get_all_rooms")
 const getAllBookings  = require("../services/get_all_booking")
 const getAllUsersByHotel  = require("../services/get_all_user_by_hotel")
+const getAllUsers = require("../services/get_all_user")
 const getAllEvents  = require("../services/get_all_event")
 const getAllReviews = require("../services/get_all_review")
 const getAllTypeRooms  = require("../services/get_all_type_of_rooms")
@@ -453,8 +454,8 @@ class ManagerController{
 
     async deleteEmployeeHandler(req, res){
         try {
-            let originEvent = await getUserById(req.params.id);
-            await deleteUser(originEvent._id.toString())
+            let originUser = await getUserById(req.params.id);
+            await deleteUser(originUser._id.toString())
         } catch(e){
             console.log(e);
         }

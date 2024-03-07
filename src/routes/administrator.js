@@ -40,4 +40,12 @@ router.route("/type_room/edit/:id").get(admin.editTypeRoom);
 router.route("/type_room/delete/:id").get(admin.deleteTypeRoomHandler);
 router.route("/type_room").get(admin.TypeRoom);
 
+//quản lý nhân viên
+router.route("/user/add-handler").post(admin.addUserHandler);
+router.route("/user/add").get(admin.addUser);
+router.route("/user/edit-handler/:id").post(admin.editUserHandler);
+router.route("/user/edit/:id").get(admin.editUser);
+router.route("/user/delete/:id").get(admin.deleteUserHandler);
+router.route("/user").get(admin.user);
+
 module.exports = router;

@@ -9,6 +9,7 @@ const path = require("path");
 const {CookieProvider} = require("../helper/cookies")
 const { RoleEnum } = require("../models/enum/role");
 const getAllHotel = require("../services/get_all_hotel")
+const getAllUsers = require("../services/get_all_user")
 const getAllService = require("../services/get_all_service")
 const getAllSelection = require("../services/get_all_selection")
 const getAllTypeRoom = require("../services/get_all_type_of_rooms")
@@ -16,6 +17,7 @@ const getHotelById = require("../services/get_hotel_by_id")
 const getTypeRoomById = require("../services/get_type_room_by_id")
 const getServiceById = require("../services/get_service_by_id")
 const getSelectionById = require("../services/get_selection_by_id")
+const getUserById  = require("../services/get_user_by_id")
 const createHotel = require("../services/create_hotel")
 const createUser = require("../services/create_user")
 const createTypeRoom = require("../services/create_type_room")
@@ -24,6 +26,7 @@ const createSelection = require("../services/create_selection")
 const updateService = require("../services/update_service")
 const updateSelection = require("../services/update_selection")
 const updateTypeRoom = require("../services/update_type_room")
+const updateUser = require("../services/update_user");
 const deleteService = require("../services/delete_service")
 const deleteSelection = require("../services/delete_selection")
 const deleteTypeRoom = require("../services/delete_type_room")
@@ -200,7 +203,7 @@ class AdminController{
         let cookies = new CookieProvider(req, res);
         cookies.setCookie(
             constants.has_message,
-            JSON.stringify(message("Bạn đã thêm dịch vụ mới thành công!",constantMesages.successCustom)),
+            JSON.stringify(message("Bạn đã thêm lựa chọn mới thành công!",constantMesages.successCustom)),
             1
         );
         res.redirect("/administrator/selection/");
@@ -250,11 +253,11 @@ class AdminController{
 
     //quản lý loại phòng
     async TypeRoom(req,res){
-        let typeRooms = await getAllTypeRoom();
+        let type_rooms = await getAllTypeRoom();
         res.render("index-manager",{
             page: "admin/index",
             roomPage: "type_room/management",
-            typeRooms: typeRooms,
+            type_rooms: type_rooms,
             ...defaultAdminNav(),
             ...defaultData(req)
         })
@@ -271,25 +274,25 @@ class AdminController{
 
     async addTypeRoomHandler(req,res){
         let typeRoom = {
-            name : req.body.tendichvu,
-            icon: req.body.icon,
+            name : req.body.loaiphong,
+            number_guest: req.body.soluongkhach,
         }
         await createTypeRoom(typeRoom);
         let cookies = new CookieProvider(req, res);
         cookies.setCookie(
             constants.has_message,
-            JSON.stringify(message("Bạn đã thêm dịch vụ mới thành công!",constantMesages.successCustom)),
+            JSON.stringify(message("Bạn đã thêm loại phòng mới thành công!",constantMesages.successCustom)),
             1
         );
         res.redirect("/administrator/type_room/");
     }
 
     async editTypeRoom(req, res) {
-        let typeRoom = await getTypeRoomById(req.params.id);
+        let type_room = await getTypeRoomById(req.params.id);
         res.render("index-manager",{
             page: "admin/index",
             roomPage: "type_room/edit",
-            typeRoom: typeRoom,
+            type_room: type_room,
             ...defaultAdminNav(),
             ...defaultData(req)
         })
@@ -297,13 +300,13 @@ class AdminController{
     async editTypeRoomHandler(req,res){
         let originTypeRoom = await getTypeRoomById(req.params.id);
 
-        originTypeRoom.name = req.body.tendichvu;
-        originTypeRoom.icon = req.body.icon;
+        originTypeRoom.name = req.body.loaiphong;
+        originTypeRoom.number_guest = req.body.soluongkhach;
         await updateTypeRoom(originTypeRoom);
         let cookies = new CookieProvider(req, res);
         cookies.setCookie(
             constants.has_message,
-            JSON.stringify(message("Bạn đã sửa thông tin lựa chọn thành công!",constantMesages.successCustom)),
+            JSON.stringify(message("Bạn đã sửa thông tin loại phòng thành công!",constantMesages.successCustom)),
             1
         );
         res.redirect("/administrator/type_room/");
@@ -320,13 +323,92 @@ class AdminController{
         let cookies = new CookieProvider(req, res);
         cookies.setCookie(
             constants.has_message,
-            JSON.stringify(message("Bạn đã xóa thông tin lựa chọn thành công!",constantMesages.successCustom)),
+            JSON.stringify(message("Bạn đã xóa thông tin loại phòng thành công!",constantMesages.successCustom)),
             1
         );
         res.redirect("/administrator/type_room/");
     }
 
     //quản lý nhân viên
+    async user(req,res){
+        let users = await getAllUsers(RoleEnum.Admin);
+        res.render("index-manager",{
+            page: "admin/index",
+            roomPage: "user/management",
+            users: users,
+            ...defaultAdminNav(),
+            ...defaultData(req)
+        })
+    }
+
+    async addUser(req, res) {
+        res.render("index-manager",{
+            page: "admin/index",
+            roomPage: "user/add",
+            ...defaultAdminNav(),
+            ...defaultData(req)
+        })
+    }
+
+    async addUserHandler(req,res){
+        let user = {
+            name: req.body.tennhanvien,
+            phone: req.body.sodienthoai,
+            email: req.body.email,
+            password: req.body.matkhau
+        }
+        await createUser(user, RoleEnum.Admin);
+        let cookies = new CookieProvider(req, res);
+        cookies.setCookie(
+            constants.has_message,
+            JSON.stringify(message("Bạn đã thêm nhân viên mới thành công!",constantMesages.successCustom)),
+            1
+        );
+        res.redirect("/administrator/user/");
+    }
+
+    async editUser(req, res) {
+        let user = await getUserById(req.params.id);
+        res.render("index-manager",{
+            page: "admin/index",
+            roomPage: "user/edit",
+            user: user,
+            ...defaultAdminNav(),
+            ...defaultData(req)
+        })
+    }
+    async editUserHandler(req,res){
+        let originUser = await getUserById(req.params.id);
+
+        originUser.name = req.body.tennhanvien;
+        originUser.phone = req.body.sodienthoai;
+        originUser.email= req.body.email;
+        await updateUser(originUser);
+        let cookies = new CookieProvider(req, res);
+        cookies.setCookie(
+            constants.has_message,
+            JSON.stringify(message("Bạn đã sửa thông tin nhân viên thành công!",constantMesages.successCustom)),
+            1
+        );
+        res.redirect("/administrator/user/");
+    }
+
+    async deleteUserHandler(req, res){
+        try {
+            let originUser = await getUserById(req.params.id);
+            await deleteUser(originUser._id.toString())
+        } catch(e){
+            console.log(e);
+        }
+
+        let cookies = new CookieProvider(req, res);
+        cookies.setCookie(
+            constants.has_message,
+            JSON.stringify(message("Bạn đã xóa thông tin nhân viên thành công!",constantMesages.successCustom)),
+            1
+        );
+        res.redirect("/administrator/user/");
+    }
     // async employee(req, res) {
     //     let users = await getAllUsers(RoleEnum.Employee);
     //     res.render("index-manager",{

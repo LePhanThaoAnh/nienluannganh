@@ -14,6 +14,12 @@ module.exports = () =>{
                 children: []
             },
             {
+                name: "Quản lý nhân viên",
+                icon: "bi bi-journal",
+                url: "/administrator/user",
+                children: []
+            },
+            {
                 name: "Quản lý dịch vụ",
                 icon: "bi bi-journal-text",
                 url: "/administrator/service",
@@ -22,7 +28,7 @@ module.exports = () =>{
             {
                 name: "Quản lý loại phòng",
                 icon: "bi bi-calendar-event",
-                url: "",
+                url: "/administrator/type_room",
                 children: []
             },
             {

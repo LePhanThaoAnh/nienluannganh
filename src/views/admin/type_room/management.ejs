@@ -30,7 +30,7 @@
           <tr>
             <td><%= i++ %></td>
             <td><%= type_room.name %></td>
-            <td></td>
+            <td><%= type_room.number_guest %></td>
             <td>
                 <a href="/administrator/type_room/edit/<%=type_room._id %>"  class="btn btn-primary">Sửa</a >
                 <button  onclick="deleteConfirmButtonClk('/administrator/type_room/delete/<%=type_room._id %>','Bạn có muốn xóa thông tin loại phòng này không?')" class="btn btn-danger">Xóa</button>

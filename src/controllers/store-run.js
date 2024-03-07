@@ -18,10 +18,10 @@ const getAllReviews = require("../services/get_all_review")
 const getBookingById = require("../services/get_booking_by_id")
 const getBookingByUser = require("../services/get_booking_by_user")
 const getCurrentEvent = require("../services/get_current_event")
+const getAllHotel = require("../services/get_all_hotel")
 //controller nơi nhận dữ liệu từ request(req) => vào Service xử lý dữ liệu 
 //=> gọi repository để truy cập vào database  thông qua models
 const getPriceOfTypeOfRoom = (rooms,discount) => {
-
     let prices = rooms.map((room) => room.original_price);
     let maxPrice = Math.max.apply(null, prices);
     let minPrice = Math.min.apply(null, prices);
@@ -66,9 +66,19 @@ const getSelectionOfTypeOfRoom = (rooms) => {
 }
 class StoreRunController{
     async homepage(req, res) {
+        let hotels = await getAllHotel(true);
+        let getPriceOfHotel = (hotel) => {
+            let prices = hotel.rooms.map((room) => room.original_price);
+            // let maxPrice = Math.max.apply(null, prices);
+            let minPrice = Math.min.apply(null, prices);
+            return parseInt(minPrice).toLocaleString('it-IT', {style : 'currency', currency : 'VND'});
+        }
+
         //đến home/index
         res.render("index",{
             page: "home/index",
+            getPriceOfHotel:getPriceOfHotel,
+            hotels: hotels,
             ...defaultData(req)
         })
     }

@@ -155,6 +155,10 @@
 </style>
 <% 
   let slogans = {
+    "home/index": {
+      title: "Trang chủ",
+      slogan: "Nơi để đặt Niềm Tin và trao Hy Vọng"
+    },
     "home/room": {
       title: "Phòng",
       slogan: "Khách sạn với những phòng tốt nhất"
@@ -193,6 +197,7 @@
     },
   }
 %>
+<% if(slogans[page]){%>
 <div class="fh5co-parallax" style="background-image: url(/images/slider1.jpg);" data-stellar-background-ratio="0.5">
   <div class="overlay"></div>
   <div class="container">
@@ -206,6 +211,7 @@
     </div>
   </div>
 </div>
+<% } %>
 
 <div class="d-flex">
   
@@ -399,4 +405,6 @@
   </div>
 </div>
 
+<% if(slogans[page]){%>
 <div style="height: 130px;"></div>
+<% } %>
