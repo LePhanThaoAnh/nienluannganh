@@ -22,16 +22,41 @@ const createHotel = require("../services/create_hotel")
 const createUser = require("../services/create_user")
 const createTypeRoom = require("../services/create_type_room")
 const createService = require("../services/create_service")
+const createEmployee = require("../services/create_employee")
 const createSelection = require("../services/create_selection")
 const updateService = require("../services/update_service")
 const updateSelection = require("../services/update_selection")
 const updateTypeRoom = require("../services/update_type_room")
 const updateUser = require("../services/update_user");
+const updateHotel = require("../services/update_hotel");
 const deleteService = require("../services/delete_service")
 const deleteSelection = require("../services/delete_selection")
 const deleteTypeRoom = require("../services/delete_type_room")
+const numberOfHotels = require("../services/number_of_hotel")
+const numberOfRooms = require("../services/number_of_room")
+const numberOfSelections = require("../services/number_of_selection")
+const numberOfTypeOfRooms = require("../services/number_of_type_of_room")
+const numberOfServices = require("../services/number_of_service")
 
 class AdminController{
+
+    async statistical(req,res){
+        let number_of_hotel = await numberOfHotels();
+        let number_of_service = await numberOfServices();
+        let number_of_type_room = await numberOfTypeOfRooms();
+        let number_of_selection = await numberOfSelections();
+
+        res.render("index-manager",{
+            page: "admin/index",
+            roomPage: "statistical/management",
+            number_of_hotel:number_of_hotel,
+            number_of_service:number_of_service,
+            number_of_type_room:number_of_type_room,
+            number_of_selection:number_of_selection,
+            ...defaultAdminNav(),
+            ...defaultData(req),
+        })
+    }
     async hotel(req,res) {
         let hotels = await getAllHotel();
         res.render("index-manager",{
@@ -59,9 +84,7 @@ class AdminController{
             email: req.body.email,
             password: req.body.matkhau,
         }
-        console.log(owner)
         let user = await createUser(owner,RoleEnum.Employee);
-        
         let hotel = {
             owner: user,
             name: req.body.tenkhachsan,
@@ -71,6 +94,7 @@ class AdminController{
             city_id: req.body.city,
         }
         await createHotel(hotel);
+        await createEmployee(hotel,owner);
         let cookies = new CookieProvider(req, res);
         cookies.setCookie(
             constants.has_message,
@@ -85,15 +109,29 @@ class AdminController{
         res.render("index-manager",{
             page: "admin/index",
             roomPage: "hotel/edit",
-            hotel: hotel,
             ...defaultAdminNav(),
-            ...defaultData(req)
+            ...defaultData(req),
+            hotel: hotel,
         })
     }
 
-    // async editHotelHandler(req, res) {
+    async editHotelHandler(req, res) {
+        let originHotel = await getHotelById(req.params.id);
+        originHotel.name = req.body.tenkhachsan;
+        originHotel.address = req.body.diachi;
+        originHotel.description = req.body.mieuta;
+        originHotel.star = req.body.sosao;
+        originHotel.city_id = req.body.city;
+        await updateHotel(originHotel);
+        let cookies = new CookieProvider(req, res);
+        cookies.setCookie(
+            constants.has_message,
+            JSON.stringify(message("Bạn đã sửa thông tin khách sạn thành công!",constantMesages.successCustom)),
+            1
+        );
+        res.redirect("/administrator/hotel/");
+    }
 
-    // }
 
     //quản lý service 
     async service(req,res){
@@ -409,15 +447,5 @@ class AdminController{
         );
         res.redirect("/administrator/user/");
     }
-    // async employee(req, res) {
-    //     let users = await getAllUsers(RoleEnum.Employee);
-    //     res.render("index-manager",{
-    //         page: "manager/index",
-    //         roomPage: "user/employee/management",
-    //         users: users,
-    //         ...defaultManagerNav(),
-    //         ...defaultData(req)
-    //     })
-    // }
 }
 module.exports = { AdminController }

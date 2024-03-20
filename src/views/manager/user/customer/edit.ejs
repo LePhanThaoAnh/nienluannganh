@@ -7,7 +7,7 @@
         </div>
     </div>
     <div class="card-body">
-        <form action="/manager/user/customer/edit-handler/<%= user._id %>" method="POST" class="d-flex flex-column">
+        <form action="/manager/<%=hotel._id%>/user/customer/edit-handler/<%= user._id %>" method="POST" class="d-flex flex-column">
             <div class="">
                 <div class="mb-3">
                     <label class="form-label ">Tên Khách Hàng</label>
@@ -24,7 +24,7 @@
             </div>
             <div class="text-center my-1">
                 <div class="d-flex justify-content-center gap-4">
-                    <a class="btn btn-warning shadow-none" href="/manager/user/customer">
+                    <a class="btn btn-warning shadow-none" href="/manager/<%=hotel._id%>/user/customer">
                         Trở về
                     </a>
                     <button class="btn btn-dark shadow-none" type="submit" name="">

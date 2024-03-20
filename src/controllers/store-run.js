@@ -229,7 +229,8 @@ class StoreRunController{
         }
         let ngaydau = req.query.ngaydau;
         let ngayket = req.query.ngayket;
-        let typeRoom = await getTypeRoomByIdAndHotel(req.hotel,req.params.id,true);
+        let typeRoom = await getTypeRoomByIdAndHotel(req.hotel,req.params.id,ngaydau,ngayket,true);
+        console.log(typeRoom)
         let getImageOfTypeOfRoom = (rooms) => {
             let images = rooms.map((room) => room.images);
             let mergedImages = images.flat();

@@ -2,7 +2,7 @@
       <div class="card-header d-flex">
         <div class="card-title flex-grow-1 d-flex justify-content-between align-items-center">
             <h3>Quản lý phòng</h3>
-            <a href="/manager/room/add" class="btn btn-dark">Thêm</a>
+            <a href="/manager/<%=hotel._id%>/room/add" class="btn btn-dark">Thêm</a>
         </div>
       </div>
       <!-- /.card-header -->
@@ -28,9 +28,9 @@
               <td><%= room.type_room.name %></td>
               <td><%= parseInt(room.original_price  ).toLocaleString('it-IT', {style : 'currency', currency : 'VND'}) %></td>
               <td>
-                <a href="/manager/room/detail/<%=room._id %>"  class="btn btn-success">Xem chi tiết</a >
-                <a href="/manager/room/edit/<%=room._id %>"  class="btn btn-primary">Sửa</a >
-                <button  onclick="deleteConfirmButtonClk('/manager/room/delete/<%=room._id %>','Bạn có muốn xóa thông tin phòng này không?')" class="btn btn-danger">Xóa</button>
+                <a href="/manager/<%=hotel._id%>/room/detail/<%=room._id %>"  class="btn btn-success">Xem chi tiết</a >
+                <a href="/manager/<%=hotel._id%>/room/edit/<%=room._id %>"  class="btn btn-primary">Sửa</a >
+                <button  onclick="deleteConfirmButtonClk('/manager/<%=hotel._id%>/room/delete/<%=room._id %>','Bạn có muốn xóa thông tin phòng này không?')" class="btn btn-danger">Xóa</button>
               </td>
             </tr>
             <% } %>

@@ -2,9 +2,9 @@ module.exports = () =>{
     return  {
         navTabs:[
             {
-                name: "Bảng điều khiển",
+                name: "Thống kê",
                 icon: "bi bi-gear-wide",
-                url: "",
+                url: "/manager/statistical",
                 children: []
             },
             {

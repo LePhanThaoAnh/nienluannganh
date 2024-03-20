@@ -3,5 +3,6 @@ module.exports = (req) =>{
         hotel: req.hotel,
         message: req.messageResponse,
         user: req.user,
+        hotelDatas: req.hotelDatas,
     }
 }

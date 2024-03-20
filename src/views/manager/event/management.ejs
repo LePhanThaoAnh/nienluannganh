@@ -2,7 +2,7 @@
       <div class="card-header d-flex">
         <div class="card-title flex-grow-1 d-flex justify-content-between align-items-center">
             <h3>Quản lý sự kiện</h3>
-            <a href="/manager/event/add" class="btn btn-dark">Thêm</a>
+            <a href="/manager/<%=hotel._id%>/event/add" class="btn btn-dark">Thêm</a>
         </div>
       </div>
       <!-- /.card-header -->
@@ -28,8 +28,8 @@
               <td><%= event.date_start.toLocaleString() %></td>
               <td><%= event.date_end.toLocaleString() %></td>
               <td>
-                <a href="/manager/event/edit/<%=event._id %>"  class="btn btn-primary">Sửa</a >
-                <button  onclick="deleteConfirmButtonClk('/manager/event/delete/<%=event._id %>','Bạn có muốn xóa thông tin sự kiện này không?')" class="btn btn-danger">Xóa</button>
+                <a href="/manager/<%=hotel._id%>/event/edit/<%=event._id %>"  class="btn btn-primary">Sửa</a >
+                <button  onclick="deleteConfirmButtonClk('/manager/<%=hotel._id%>/event/delete/<%=event._id %>','Bạn có muốn xóa thông tin sự kiện này không?')" class="btn btn-danger">Xóa</button>
               </td>
             </tr>
             <% } %>

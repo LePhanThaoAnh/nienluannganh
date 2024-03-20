@@ -7,7 +7,7 @@
         </div>
     </div>
     <div class="card-body">
-        <form action="/manager/room/add-handler" enctype="multipart/form-data" method="POST" class="d-flex flex-column">
+        <form action="/manager/<%=hotel._id%>/room/add-handler" enctype="multipart/form-data" method="POST" class="d-flex flex-column">
             <div class="d-flex ">
                 <div class="flex-grow-1 me-3">
                     <div class="mb-3">
@@ -48,7 +48,7 @@
 
             <div class="text-center my-1">
                 <div class="d-flex justify-content-center gap-4">
-                    <a class="btn btn-warning shadow-none" href="/manager/booking">
+                    <a class="btn btn-warning shadow-none" href="/manager/<%=hotel._id%>/booking">
                         Trở về
                     </a>
                     <button class="btn btn-dark shadow-none" type="submit" name="">

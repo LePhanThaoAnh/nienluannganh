@@ -6,7 +6,8 @@ const router = express.Router();
 const upload = multer();
 
 let manager = new ManagerController();
-
+//thống kê
+router.route("/statistical").get(manager.statistical);
 // quản lý phòng
 router.route("/room/add-handler").post(upload.fields([
     {

@@ -30,7 +30,8 @@
           <tr>
             <td><%= i++ %></td>
             <td><%= selection.name %></td>
-            <td></td>
+            <td><i class="<%=selection.icon%> text-success"
+              style="font-size: 20px"></i></td>
             <td>
                 <a href="/administrator/selection/edit/<%=selection._id %>"  class="btn btn-primary">Sửa</a >
                 <button  onclick="deleteConfirmButtonClk('/administrator/selection/delete/<%=selection._id %>','Bạn có muốn xóa thông tin dịch vụ này không?')" class="btn btn-danger">Xóa</button>

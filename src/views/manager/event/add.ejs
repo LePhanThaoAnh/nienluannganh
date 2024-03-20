@@ -7,7 +7,7 @@
         </div>
     </div>
     <div class="card-body">
-        <form action="/manager/event/add-handler" method="POST" class="d-flex flex-column">
+        <form action="/manager/<%=hotel._id%>/event/add-handler" method="POST" class="d-flex flex-column">
             <div class="">
                 <div class="mb-3">
                     <label class="form-label ">Tên sự kiện</label>
@@ -28,7 +28,7 @@
             </div>
             <div class="text-center my-1">
                 <div class="d-flex justify-content-center gap-4">
-                    <a class="btn btn-warning shadow-none" href="/manager/event">
+                    <a class="btn btn-warning shadow-none" href="/manager/<%=hotel._id%>/event">
                         Trở về
                     </a>
                     <button class="btn btn-dark shadow-none" type="submit" name="">

@@ -3,18 +3,43 @@ const {
     RoomRepository,
     ServiceRoomRepository,
     SelectionRoomRepository,
-    ImageRepository
+    ImageRepository,
+    DetailBookingRepository,
 } = require('../repositories/index');
 
-async function getTypeRoomById(hotel, id, populate) {
+async function getTypeRoomById(hotel, id, startDate, endDate, populate) {
     const typeRoomRepo = new TypeRoomRepository();
     const roomRepo = new RoomRepository();
+    const detailBookingRepo = new DetailBookingRepository();
     const serviceRoomRepo = new ServiceRoomRepository();
     const selectionRoomRepo = new SelectionRoomRepository();
     const imageRepo = new ImageRepository();
     let typeOfRoom =  await typeRoomRepo.selectById(id);
     if(populate){
             let rooms = await roomRepo.select({hotel:hotel, type_room:typeOfRoom});
+            let detailBookings = await detailBookingRepo.select({
+                room: {
+                    // tìm những thằng nằm trong danh sách room
+                    "$in": rooms,
+                }
+            });
+            detailBookings =  detailBookings.filter((detail)=>{
+                //tìm ra những phòng có ngày check_in, out >= ngày bắt đầu và <= kết thúc. 
+                if((detail.booking.check_in >= new Date(startDate) && detail.booking.check_in <= new Date(endDate)) || 
+                (detail.booking.check_out >= new Date(startDate) && detail.booking.check_out <= new Date(endDate))){
+                    return true;
+                }else
+                return false;
+             });
+             //danh sách room đã được đặt.
+            let roomBooked = detailBookings.map((detail)=>{
+                return detail.room._id.toString();
+            });
+            //lấy danh sách rooms kh có những phòng đã được đặt.
+            rooms = rooms.filter((room)=>{
+                return !roomBooked.includes(room._id.toString());
+            })
+            console.log(rooms)
             //chứa list room
             let roomResult = [];
             for(let room of rooms ){

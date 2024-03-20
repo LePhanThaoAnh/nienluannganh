@@ -3,10 +3,12 @@ class CookieProvider {
         this.request = request;
         this.response = response;
     }
+    
     setParamater(request, response) {
         this.request = request;
         this.response = response;
     }
+    //lấy thông tin ng dùng, message
     getCookie(request, nameCookie) {
         return request.cookies[nameCookie];
     }
@@ -19,6 +21,7 @@ class CookieProvider {
         };
         response.cookie(nameCookie, value, options);
     }
+
     getSignedCookie(request, nameCookie) {
         return request.signedCookies[nameCookie];
     }

@@ -35,40 +35,19 @@
             role="button"
             data-toggle="dropdown"
             aria-expanded="false"
-            >Hotel</a
-          >
+            >Hotel
+            </a>
+            
           <div class="dropdown-menu">
+            <% for(hotelData of hotelDatas){%>
             <a class="dropdown-item"
-              href="http://freehtml5.co/preview/?item=build-free-html5-bootstrap-template"
+              href="/hotel/<%=hotelData._id%>/room"
               target="_blank"
-              >Build</a
-            >
-            <a class="dropdown-item"
-              href="http://freehtml5.co/preview/?item=work-free-html5-template-bootstrap"
-              target="_blank"
-              >Work</a
-            >
-            <a class="dropdown-item"
-              href="http://freehtml5.co/preview/?item=light-free-html5-template-bootstrap"
-              target="_blank"
-              >Light</a
-            >
-            <a class="dropdown-item"
-              href="http://freehtml5.co/preview/?item=relic-free-html5-template-using-bootstrap"
-              target="_blank"
-              >Relic</a
-            >
-            <a class="dropdown-item"
-              href="http://freehtml5.co/preview/?item=display-free-html5-template-using-bootstrap"
-              target="_blank"
-              >Display</a
-            >
-            <a class="dropdown-item"
-              href="http://freehtml5.co/preview/?item=sprint-free-html5-template-bootstrap"
-              target="_blank"
-              >Sprint</a
-            >
+              > <%= hotelData.name %>
+              </a>
+            <% }%>
           </div>
+          
         </li>
         <li class="nav-item active">
           <a class="nav-link" href="services">Services</a>
@@ -94,7 +73,7 @@
           <div class="dropdown-menu">
             <% if(user != undefined){%>
                 <a
-                    href="historical-booking"
+                    href="/historical-booking"
                     class="dropdown-item"
                 >
                   Lịch sử đặt phòng

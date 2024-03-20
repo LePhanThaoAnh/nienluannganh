@@ -3,7 +3,7 @@
       <div class="card-header d-flex">
         <div class="card-title flex-grow-1 d-flex justify-content-between align-items-center">
             <h3>Quản lý đặt phòng</h3>
-            <a href="/manager/booking/add" class="btn btn-dark">Thêm</a>
+            <a href="/manager/<%=hotel._id%>/booking/add" class="btn btn-dark">Thêm</a>
         </div>
       </div>
       <!-- /.card-header -->
@@ -34,7 +34,7 @@
               <td><%= getStatus(booking)  %></td></td>
               <td>
                 <% if(getStatus(booking) == "Đã đặt phòng" || getStatus(booking) == "Đã nhận phòng") {%>
-                <a class="btn btn-success" href="/manager/booking/status_booking/<%=booking._id%>">
+                <a class="btn btn-success" href="/manager/<%=hotel._id%>/booking/status_booking/<%=booking._id%>">
                   Sửa trạng thái</a> 
                 <%}%>
               </td>

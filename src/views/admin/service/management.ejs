@@ -30,7 +30,8 @@
           <tr>
             <td><%= i++ %></td>
             <td><%= service.name %></td>
-            <td></td>
+            <td><i class="<%=service.icon%> text-success"
+              style="font-size: 20px"></i></td>
             <td>
                 <a href="/administrator/service/edit/<%=service._id %>"  class="btn btn-primary">Sửa</a >
                 <button  onclick="deleteConfirmButtonClk('/administrator/service/delete/<%=service._id %>','Bạn có muốn xóa thông tin dịch vụ này không?')" class="btn btn-danger">Xóa</button>

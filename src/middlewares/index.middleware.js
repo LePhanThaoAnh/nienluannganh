@@ -27,6 +27,8 @@ class Middleware {
             let hotel = await hotelRepo.selectById(req.params.hotelId);
             req.hotel = hotel;
         }
+        let hotels = await hotelRepo.selectAll();
+        req.hotelDatas = hotels;
         return await next();
     }
 
@@ -102,6 +104,7 @@ class Middleware {
         next()
     }
 
+    //lấy thông tin ng dùng
     async authenticate(req, res, next){
         let cookies = new CookieProvider(req, res);
         let userString = cookies.getCookie(constants.user_info);

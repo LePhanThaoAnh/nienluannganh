@@ -1,4 +1,5 @@
 module.exports = (customMessage, message) => {
+    //Hàm custom lại message dựa trên constants message
     let msg = {
         message: message.message,
         type: message.type,

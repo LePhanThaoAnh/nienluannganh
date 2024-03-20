@@ -41,16 +41,38 @@ const deleteRoom = require("../services/delete_room");
 const deleteEvent = require("../services/delete_event");
 const deleteUser = require("../services/delete_user");
 const deleteBooking = require("../services/delete_booking");
-
+const numberOfRoomByHotel = require("../services/number_of_room_by_hotel")
+const numberOfEventByHotel = require("../services/number_of_event_by_hotel")
+const numberOfUser = require("../services/number_of_user")
+const numberOfBookingByHotel = require("../services/number_of_booking_by_hotel")
 
 const constants = require("../constants")
 const constantMesages = require("../constants/message"); 
 const { RoleEnum } = require("../models/enum/role");
 const {BookingStatusEnum} = require("../models/enum/booking_status");
 
+
 //controller nơi nhận dữ liệu từ request(req) => vào Service xử lý dữ liệu 
 //=> gọi repository để truy cập vào database  thông qua models
 class ManagerController{
+    //thống kê
+    async statistical(req, res) {
+        let number_room = await numberOfRoomByHotel(req.hotel);
+        let number_of_booking = await numberOfBookingByHotel(req.hotel);
+        let number_of_event = await numberOfEventByHotel(req.hotel);
+        let number_of_user = await numberOfUser();
+
+        res.render("index-manager",{
+            page: "manager/index",
+            roomPage: "statistical/management",
+            number_room: number_room,
+            number_of_booking:number_of_booking,
+            number_of_event:number_of_event,
+            number_of_user:number_of_user,
+            ...defaultManagerNav(),
+            ...defaultData(req)
+        })
+    }
 
     //quản lý phòng
     async room(req, res) {
@@ -163,7 +185,7 @@ class ManagerController{
             JSON.stringify(message("Bạn đã thêm phòng mới thành công!",constantMesages.successCustom)),
             1
         );
-        res.redirect("/manager/room/");
+        res.redirect("/manager/" +req.hotel._id+ "/room/");
         
     }
 
@@ -263,7 +285,7 @@ class ManagerController{
             JSON.stringify(message("Bạn đã sửa thông tin phòng thành công!",constantMesages.successCustom)),
             1
         );
-        res.redirect("/manager/room/");
+        res.redirect("/manager/" +req.hotel._id+ "/room/");
         
     }
 
@@ -289,7 +311,7 @@ class ManagerController{
             JSON.stringify(message("Bạn đã xóa thông tin phòng thành công!",constantMesages.successCustom)),
             1
         );
-        res.redirect("/manager/room/");
+        res.redirect("/manager/" +req.hotel._id+ "/room/");
     }
 
     //quản lý sự kiện
@@ -330,7 +352,7 @@ class ManagerController{
             JSON.stringify(message("Bạn đã thêm sự kiện mới thành công!",constantMesages.successCustom)),
             1
         );
-        res.redirect("/manager/event/");
+        res.redirect("/manager/" +req.hotel._id+ "/event/");
     }
 
     async editEvent(req,res){
@@ -361,7 +383,7 @@ class ManagerController{
             JSON.stringify(message("Bạn đã sửa thông tin sự kiện thành công!",constantMesages.successCustom)),
             1
         );
-        res.redirect("/manager/event/");
+        res.redirect("/manager/" +req.hotel._id+ "/event/");
         
     }
 
@@ -379,7 +401,7 @@ class ManagerController{
             JSON.stringify(message("Bạn đã xóa thông tin event thành công!",constantMesages.successCustom)),
             1
         );
-        res.redirect("/manager/event/");
+        res.redirect("/manager/" +req.hotel._id+ "/event/");
     }
 
     //quản lý nhân viên
@@ -418,7 +440,7 @@ class ManagerController{
             JSON.stringify(message("Bạn đã thêm nhân viên mới thành công!",constantMesages.successCustom)),
             1
         );
-        res.redirect("/manager/user/employee");
+        res.redirect("/manager/" +req.hotel._id+ "/user/employee");
         
     }
 
@@ -448,7 +470,7 @@ class ManagerController{
             JSON.stringify(message("Bạn đã sửa thông tin nhân viên thành công!",constantMesages.successCustom)),
             1
         );
-        res.redirect("/manager/user/employee/");
+        res.redirect("/manager/" +req.hotel._id+ "/user/employee/");
         
     }
 
@@ -466,7 +488,7 @@ class ManagerController{
             JSON.stringify(message("Bạn đã xóa thông tin nhân viên thành công!",constantMesages.successCustom)),
             1
         );
-        res.redirect("/manager/user/employee/");
+        res.redirect("/manager/" +req.hotel._id+ "/user/employee/");
     }
 
 
@@ -505,7 +527,7 @@ class ManagerController{
             JSON.stringify(message("Bạn đã thêm khách hàng mới thành công!",constantMesages.successCustom)),
             1
         );
-        res.redirect("/manager/user/customer");
+        res.redirect("/manager/" +req.hotel._id+ "/user/customer");
         
     }
 
@@ -535,7 +557,7 @@ class ManagerController{
             JSON.stringify(message("Bạn đã sửa thông tin khách hàng thành công!",constantMesages.successCustom)),
             1
         );
-        res.redirect("/manager/user/customer/");
+        res.redirect("/manager/" +req.hotel._id+ "/user/customer/");
         
     }
 
@@ -553,7 +575,7 @@ class ManagerController{
             JSON.stringify(message("Bạn đã xóa thông tin khách hàng thành công!",constantMesages.successCustom)),
             1
         );
-        res.redirect("/manager/user/customer/");
+        res.redirect("/manager/" +req.hotel._id+ "/user/customer/");
     }
 
 
@@ -607,7 +629,7 @@ class ManagerController{
             JSON.stringify(message("Bạn đã sửa trạng thái thành công!",constantMesages.successCustom)),
             1
         );
-        res.redirect("/manager/booking");
+        res.redirect("/manager/" +req.hotel._id+ "/booking");
     }
     //Đánh giá
     async review(req, res){

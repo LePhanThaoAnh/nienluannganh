@@ -40,7 +40,7 @@
             <td class="two-line-ellipsis"><%= hotel.city_id %></td>
             <td class="two-line-ellipsis"><%= hotel.description  %></td></td>
             <td>
-                <a href="/administrator/hotel/edit/<%=hotel._id %>"  class="btn btn-primary">Sửa</a >
+                <a href="/administrator/hotel/edit/<%= hotel._id %>"  class="btn btn-primary">Sửa</a >
                 <button  onclick="deleteConfirmButtonClk('/administrator/hotel/delete/<%=hotel._id %>','Bạn có muốn xóa thông tin khách sạn này không?')" class="btn btn-danger">Xóa</button>
               </td>
           </tr>
