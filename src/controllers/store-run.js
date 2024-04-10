@@ -133,6 +133,7 @@ class StoreRunController{
         let typeRooms = await getAllTypeRoomByHotel(req.hotel);
         let reviews = await getAllReviews(req.hotel);
         let events = await getCurrentEvent(req.hotel);
+
         let employeeScore = 0; 
         let sactificationScore = 0; 
         let wifiScore = 0;
@@ -149,11 +150,13 @@ class StoreRunController{
             moneyScore += review.moneyScore;
             cleanlinessScore += review.cleanlinessScore;
         }
+
         let discounts = events.map(event => event.discount_percent);
         let maxDiscount = 0;
         if(discounts.length !=0 ){
             maxDiscount = Math.max.apply(null,discounts);
         }
+
         let discount =  maxDiscount/100;
         employeeScore = Math.floor(employeeScore/reviews.length)/10 ;
         sactificationScore = Math.floor(sactificationScore/reviews.length)/10 ;
@@ -225,7 +228,7 @@ class StoreRunController{
                 JSON.stringify(message("Người dùng chưa đăng nhập",constantMesages.errorCustom)),
                 1
             );
-            return res.redirect("/room")
+            return res.redirect("/hotel/"+req.hotel._id+"/room")
         }
         let ngaydau = req.query.ngaydau;
         let ngayket = req.query.ngayket;
@@ -251,21 +254,28 @@ class StoreRunController{
     }
     async bookingHandler(req,res){
         let selection = req.body.luachon;
+        let ngaydau = req.query.ngaydau;
+        let ngayket = req.query.ngayket;
         let currentSelection = await getSelectionById(selection);
         let isCheckInWithCreditCard = currentSelection.name == 'Thanh toán online qua chuyển khoản';
         let events = await getCurrentEvent(req.hotel);
         let discounts = events.map(event => event.discount_percent);
         let maxDiscount = 0;
+
         if(discounts.length !=0 ){
             maxDiscount = Math.max.apply(null,discounts);
         }
+
         let discount =  maxDiscount/100;
         let phongs = req.body.phong;
         let roomDetails  = []
         let total = 0;
         let numberOfDaysBooked = Math.floor((new Date(req.body.ngayket) - new Date(req.body.ngaydau))  / (86400 * 1000));
+
         if(typeof phongs == "string"){
             let room = await getRoomById(phongs,false);
+            let typeRoom = await getTypeRoomByIdAndHotel(req.hotel,room.type_room._id.toString(),ngaydau,ngayket,true);
+            discount = (discount > typeRoom.discount/100 ? discount : typeRoom.discount/100)
             if(discount){
                 roomDetails.push({
                     original_price: room.original_price,
@@ -286,6 +296,8 @@ class StoreRunController{
         } else {
             for(let phong of phongs){
                 let room = await getRoomById(phong,false);
+                let typeRoom = await getTypeRoomByIdAndHotel(req.hotel,room.type_room._id.toString(),ngaydau,ngayket,true);
+                discount = (discount > typeRoom.discount/100 ? discount : typeRoom.discount/100)
                 if(discount){
                     roomDetails.push({
                         original_price: room.original_price,

@@ -3,7 +3,8 @@ const {
     RoomRepository,
     ServiceRoomRepository,
     SelectionRoomRepository,
-    ImageRepository
+    ImageRepository,
+    DiscountRepository,
 } = require('../repositories/index');
 
 async function getAllTypeRoomByHotel(hotel) {
@@ -12,6 +13,7 @@ async function getAllTypeRoomByHotel(hotel) {
     const serviceRoomRepo = new ServiceRoomRepository();
     const selectionRoomRepo = new SelectionRoomRepository();
     const imageRepo = new ImageRepository();
+    const discountRepo = new DiscountRepository();
     let typesOfRoom =  await typeRoomRepo.selectAll();
     //list typeofroom
     let result = [];
@@ -32,9 +34,20 @@ async function getAllTypeRoomByHotel(hotel) {
             })
         }
         roomResult.sort((a, b) => a.original_price - b.original_price);
+        //danh sách giảm giá của từng loại phòng ở hotel
+        let discounts = await discountRepo.select({
+            type_room: typeOfRoom,
+            hotel:hotel,
+        });
+        discounts.sort((a, b) => a.discount_percent - b.discount_percent);
+        let discount = 0;
+        if(discounts.length > 0){
+            discount = discounts[0].discount_percent;
+        }
         result.push({
             ...typeOfRoom._doc,
             rooms: roomResult,
+            discount: discount,
         })
     }
     return result;

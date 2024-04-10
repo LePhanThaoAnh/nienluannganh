@@ -33,6 +33,13 @@ router.route("/event/edit/:id").get(manager.editEvent);
 router.route("/event/delete/:id").get(manager.deleteEventHandler);
 router.route("/event").get(manager.event);
 
+// quản lý sự kiện giảm giá
+router.route("/discount/add").get(manager.addDiscount);
+router.route("/discount/add-handler").post(manager.addDiscountHandler);
+router.route("/discount/edit-handler/:id").post(manager.editDiscountHandler);
+router.route("/discount/edit/:id").get(manager.editDiscount);
+router.route("/discount/delete/:id").get(manager.deleteDiscountHandler);
+router.route("/discount").get(manager.discount);
 
 // quản lý nhân viên
 router.route("/user/employee/add-handler").post(manager.addEmployeeHandler);

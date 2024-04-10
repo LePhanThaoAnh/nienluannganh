@@ -17,15 +17,18 @@ const getAllService  = require("../services/get_all_service")
 const getTypeRoomById  = require("../services/get_type_room_by_id")
 const getServiceById  = require("../services/get_service_by_id")
 const getRoomById  = require("../services/get_room_by_id")
+const getDiscountById  = require("../services/get_discount_by_id")
 const getBookingById  = require("../services/get_booking_by_id")
 const getReviewById  = require("../services/get_review_by_id")
 const getEventById  = require("../services/get_event_by_id")
 const getUserById  = require("../services/get_user_by_id")
 const getSelectionById  = require("../services/get_selection_by_id")
 const getImageByFilter  = require("../services/get_image_by_filter")
+const getAllDiscounts = require("../services/get_all_discount")
 const createRoom  = require("../services/create_room")
 const createUser  = require("../services/create_user")
 const createEvent = require("../services/create_event")
+const createDiscount = require("../services/create_discount")
 const createEmployee = require("../services/create_employee");
 const createImage  = require("../services/create_image")
 const createServiceRoom  = require("../services/create_service_room")
@@ -33,19 +36,21 @@ const createSelectionRoom  = require("../services/create_selection_room")
 const updateRoom = require("../services/update_room");
 const updateUser = require("../services/update_user");
 const updateEvent = require("../services/update_event");
+const updateDiscount = require("../services/update_discount");
 const updateBooking = require("../services/update_booking");
 const deleteServiceRoomByFilter = require("../services/delete_service_room_by_filter");
 const deleteSelectionRoomByFilter = require("../services/delete_selection_room_by_filter");
 const deleteImageByFilter = require("../services/delete_image_by_filter");
 const deleteRoom = require("../services/delete_room");
 const deleteEvent = require("../services/delete_event");
+const deleteDiscount = require("../services/delete_discount");
 const deleteUser = require("../services/delete_user");
 const deleteBooking = require("../services/delete_booking");
 const numberOfRoomByHotel = require("../services/number_of_room_by_hotel")
 const numberOfEventByHotel = require("../services/number_of_event_by_hotel")
 const numberOfUser = require("../services/number_of_user")
 const numberOfBookingByHotel = require("../services/number_of_booking_by_hotel")
-
+const bestTypeRoom = require("../services/best_type_room");
 const constants = require("../constants")
 const constantMesages = require("../constants/message"); 
 const { RoleEnum } = require("../models/enum/role");
@@ -57,11 +62,12 @@ const {BookingStatusEnum} = require("../models/enum/booking_status");
 class ManagerController{
     //thống kê
     async statistical(req, res) {
+        var month = new Date().getMonth()+1;
         let number_room = await numberOfRoomByHotel(req.hotel);
         let number_of_booking = await numberOfBookingByHotel(req.hotel);
         let number_of_event = await numberOfEventByHotel(req.hotel);
         let number_of_user = await numberOfUser();
-
+        let best_type_room = await bestTypeRoom(req.hotel);
         res.render("index-manager",{
             page: "manager/index",
             roomPage: "statistical/management",
@@ -69,6 +75,8 @@ class ManagerController{
             number_of_booking:number_of_booking,
             number_of_event:number_of_event,
             number_of_user:number_of_user,
+            best_type_room: best_type_room,
+            month:month,
             ...defaultManagerNav(),
             ...defaultData(req)
         })
@@ -402,6 +410,101 @@ class ManagerController{
             1
         );
         res.redirect("/manager/" +req.hotel._id+ "/event/");
+    }
+
+    //quản lý giảm giá
+     async discount(req, res) {
+        let discounts = await getAllDiscounts(req.hotel);
+        res.render("index-manager",{
+            page: "manager/index",
+            roomPage: "discount/management",
+            discounts: discounts,
+            ...defaultManagerNav(),
+            ...defaultData(req)
+        })
+    }
+
+    async addDiscount(req, res) {
+        let type_rooms = await getAllTypeRooms();
+        res.render("index-manager",{
+            page: "manager/index",
+            roomPage: "discount/add",
+            type_rooms:type_rooms,
+            ...defaultManagerNav(),
+            ...defaultData(req)
+        })
+    }
+
+    async addDiscountHandler(req, res) {
+        let type_room = await getTypeRoomById(req.body.phong);
+        let discount = {
+            name: req.body.tengiamgia,
+            type_room:type_room,
+            hotel: req.hotel,
+            discount_percent: req.body.phantram,
+            date_start: req.body.ngaydau,
+            date_end: req.body.ngayket,
+        }
+        await createDiscount(discount);
+        let cookies = new CookieProvider(req, res);
+        cookies.setCookie(
+            constants.has_message,
+            JSON.stringify(message("Bạn đã thêm giảm giá mới thành công!",constantMesages.successCustom)),
+            1
+        );
+        res.redirect("/manager/" +req.hotel._id+ "/discount/");
+    }
+
+    async editDiscount(req,res){
+        let discount = await getDiscountById(req.params.id);
+        let type_rooms = await getAllTypeRooms();
+        res.render("index-manager",{
+            page: "manager/index",
+            roomPage: "discount/edit",
+            discount: discount,
+            type_rooms: type_rooms,
+            ...defaultManagerNav(),
+            ...defaultData(req)
+        })
+    }
+
+    async editDiscountHandler(req, res) {
+        let originDiscount = await getDiscountById(req.params.id);
+        let type_room = await getTypeRoomById(req.body.phong);
+        originDiscount.hotel = req.hotel;
+        originDiscount.name = req.body.tengiamgia;
+        originDiscount.type_room = type_room;
+        originDiscount.discount_percent = req.body.phantram;
+        originDiscount.date_start= req.body.ngaydau;
+        originDiscount.date_end= req.body.ngayket;
+        
+        await updateDiscount(originDiscount);
+
+        let cookies = new CookieProvider(req, res);
+        cookies.setCookie(
+            constants.has_message,
+            JSON.stringify(message("Bạn đã sửa thông tin giảm giá thành công!",constantMesages.successCustom)),
+            1
+        );
+        res.redirect("/manager/" +req.hotel._id+ "/discount/");
+        
+    }
+
+    async deleteDiscountHandler(req, res){
+        try {
+            let originDiscount = await getDiscountById(req.params.id);
+            await deleteDiscount(originDiscount._id.toString())
+        } catch(e){
+            console.log(e);
+        }
+        
+        let cookies = new CookieProvider(req, res);
+        cookies.setCookie(
+            constants.has_message,
+            JSON.stringify(message("Bạn đã xóa thông tin giảm giá thành công!",constantMesages.successCustom)),
+            1
+        );
+        res.redirect("/manager/" +req.hotel._id+ "/discount/");
     }
 
     //quản lý nhân viên

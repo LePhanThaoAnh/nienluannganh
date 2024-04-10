@@ -29,6 +29,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/litepicker/dist/litepicker.js"></script>
 <script>
+    // set lại giá tiền
     function getInterimPrice(roomString, selectElement,goalId,discount) {
         let rooms = JSON.parse(roomString);
         const selectedValues = Array.from(selectElement.selectedOptions).map(option => option.value);
@@ -193,7 +194,7 @@
             </div>
           </td>
           <td><%=typeRoom.number_guest %></td>
-          <td><%- getPriceOfTypeOfRoom(typeRoom.rooms,discount) %></td>
+          <td><%- getPriceOfTypeOfRoom(typeRoom.rooms,(discount > typeRoom.discount/100 ? discount : typeRoom.discount/100)) %></td>
           <td>
             <div class="d-flex flex-column gap-4 pb-2">
               <%for( let selection of getSelectionOfTypeOfRoom(typeRoom.rooms))
@@ -212,11 +213,11 @@
           </td>
 
           <td>
-              <select class="form-select shadow-none" name="phong" multiple required onchange="getInterimPrice('<%= JSON.stringify(typeRoom.rooms)%>', this, '#current-total-price-<%= typeRoom._id %>',<%= discount%>)">
+              <select class="form-select shadow-none" name="phong" multiple required onchange="getInterimPrice('<%= JSON.stringify(typeRoom.rooms)%>', this, '#current-total-price-<%= typeRoom._id %>',<%= (discount > typeRoom.discount/100 ? discount : typeRoom.discount/100)%>)">
                 <%for( let room of typeRoom.rooms) { %>
                 <optgroup label="<%= room.name %>">
                   <option value="<%= room._id %>" ondblclick="this.selected = false;">
-                    <%= parseInt(room.original_price - room.original_price*discount).toLocaleString('it-IT', {style : 'currency', currency : 'VND'}) %>
+                    <%= parseInt(room.original_price - room.original_price*(discount > typeRoom.discount/100 ? discount : typeRoom.discount/100)).toLocaleString('it-IT', {style : 'currency', currency : 'VND'}) %>
                   </option>
                 </optgroup>
                 <% } %>

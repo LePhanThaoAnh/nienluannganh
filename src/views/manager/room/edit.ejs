@@ -23,7 +23,7 @@
                         <label class="form-label">Loại phòng</label>
                         <select class="form-select shadow-none" name="loaiphong" type="text" required>
                             <% for (type of typeRooms) {%>
-                                <option value="<%= type._id %>" <%= room.type_room._id == type._id ? "selected" : ""%>>
+                                <option value="<%= type._id %>" <%= room.type_room._id.toString() == type._id.toString() ? "selected" : "" %>>
                                     <%= type.name %>
                                 </option>
                                 <% } %>

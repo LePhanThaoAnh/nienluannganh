@@ -5,6 +5,7 @@ const {
     SelectionRoomRepository,
     ImageRepository,
     DetailBookingRepository,
+    DiscountRepository,
 } = require('../repositories/index');
 
 async function getTypeRoomById(hotel, id, startDate, endDate, populate) {
@@ -14,6 +15,7 @@ async function getTypeRoomById(hotel, id, startDate, endDate, populate) {
     const serviceRoomRepo = new ServiceRoomRepository();
     const selectionRoomRepo = new SelectionRoomRepository();
     const imageRepo = new ImageRepository();
+    const discountRepo = new DiscountRepository();
     let typeOfRoom =  await typeRoomRepo.selectById(id);
     if(populate){
             let rooms = await roomRepo.select({hotel:hotel, type_room:typeOfRoom});
@@ -55,9 +57,19 @@ async function getTypeRoomById(hotel, id, startDate, endDate, populate) {
                 })
             }
             roomResult.sort((a, b) => a.original_price - b.original_price);
+            let discounts = await discountRepo.select({
+                type_room: typeOfRoom,
+                hotel:hotel,
+            });
+            discounts.sort((a, b) => a.discount_percent - b.discount_percent);
+            let discount = 0;
+            if(discounts.length > 0){
+                discount = discounts[0].discount_percent;
+            }
             return {
                 ...typeOfRoom._doc,
                 rooms: roomResult,
+                discount: discount,
             };
     }
     else{

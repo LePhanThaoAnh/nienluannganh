@@ -26,6 +26,12 @@ module.exports = () =>{
                 children: []
             },
             {
+                name: "Quản lý giảm giá",
+                icon: "bi bi-calendar-event",
+                url: "/manager/discount",
+                children: []
+            },
+            {
                 name: "Quản lý người dùng",
                 icon: "bi bi-person-circle",
                 url: "#",

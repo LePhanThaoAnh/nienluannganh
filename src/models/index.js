@@ -14,6 +14,7 @@ const { Service } = require("./service");
 const { TypeRoom } = require("./type_of_room");
 const { User } = require("./user");
 const {Employee} = require("./employee");
+const {Discount} = require("./discount");
 module.exports = {
     Employee,
     Booking,
@@ -24,6 +25,7 @@ module.exports = {
     Payment,
     Review,
     Role,
+    Discount,
     Room,
     SelectionRoom,
     Selection,
