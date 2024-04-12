@@ -3,11 +3,30 @@ const fs = require("fs")
 const router = express.Router();
 const { StoreRunController }  = require("./controllers/store-run");
 const { Middleware }  = require("./middlewares/index.middleware");
-
+const listEndpoints = require("express-list-endpoints");
 let storeRun = new StoreRunController();
 let middleware = new Middleware();
 let listRouteName = fs.readdirSync(`${__dirname}/routes`);
 console.log(listRouteName);
+
+
+router.get("/routing", (req, res) => {
+    let paths = [];
+    listEndpoints(route).forEach(x => {
+        let path;
+        if (x.methods.length > 1) {
+            path = [];
+            x.methods.forEach(method => {
+                path.push(method + ": " + x.path);
+            });
+        } else {
+            path = x.methods + ": " + x.path;
+        }
+        paths.push(path);
+    });
+    res.json(paths);
+});
+
 
 for (const routeName of listRouteName) {
     let name = routeName.replace(".js","")

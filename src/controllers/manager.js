@@ -548,11 +548,11 @@ class ManagerController{
     }
 
     async editEmployee(req,res){
-        let user = await getUserById(req.params.id);
+        let currentUser = await getUserById(req.params.id);
         res.render("index-manager",{
             page: "manager/index",
             roomPage: "user/employee/edit",
-            user: user,
+            currentUser: currentUser,
             ...defaultManagerNav(),
             ...defaultData(req)
         })
@@ -635,11 +635,11 @@ class ManagerController{
     }
 
     async editCustomer(req,res){
-        let user = await getUserById(req.params.id);
+        let currentUser = await getUserById(req.params.id);
         res.render("index-manager",{
             page: "manager/index",
             roomPage: "user/customer/edit",
-            user: user,
+            currentUser: currentUser,
             ...defaultManagerNav(),
             ...defaultData(req)
         })

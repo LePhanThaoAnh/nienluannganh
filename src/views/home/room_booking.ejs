@@ -1,7 +1,7 @@
 <script>
     function setIframe(element, id){
         document.getElementById("roomDetailModalLabel").innerText = element.innerText
-        document.getElementById("roomDetailModalIframe").src = "hotel/<%=hotel._id%>/room/" +id;
+        document.getElementById("roomDetailModalIframe").src = "/hotel/<%=hotel._id%>/room/" +id;
         modelHandle(element)
     }
 </script>

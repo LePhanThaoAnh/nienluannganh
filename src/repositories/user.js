@@ -52,6 +52,7 @@ class UserRepository {
             // lọc 1 thằng theo id 
             const query = User.findById(id);
             return await query.exec();
+
         } catch (err) {
             console.log(err);
         }

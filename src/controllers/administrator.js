@@ -406,11 +406,11 @@ class AdminController{
     }
 
     async editUser(req, res) {
-        let user = await getUserById(req.params.id);
+        let currentUser = await getUserById(req.params.id);
         res.render("index-manager",{
             page: "admin/index",
             roomPage: "user/edit",
-            user: user,
+            currentUser: currentUser,
             ...defaultAdminNav(),
             ...defaultData(req)
         })
